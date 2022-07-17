@@ -1,4 +1,4 @@
-package com.brettkaplan.frcscouting
+package com.team5417.frcscouting
 
 import org.junit.Test
 

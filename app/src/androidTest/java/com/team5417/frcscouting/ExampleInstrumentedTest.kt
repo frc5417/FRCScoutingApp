@@ -1,4 +1,4 @@
-package com.brettkaplan.frcscouting
+package com.team5417.frcscouting
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

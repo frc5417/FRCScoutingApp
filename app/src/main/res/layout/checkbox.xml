@@ -11,27 +11,24 @@
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Slider (0)"
+        android:text="Checkbox"
         android:fontFamily="@font/twcenmtstd"
         android:textSize="24sp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/slider"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/slider"
+    <CheckBox
+        android:id="@+id/checkbox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:value="2"
-        android:valueFrom="0"
-        android:valueTo="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label"
         app:layout_constraintTop_toTopOf="parent"
-        app:thumbColor="@color/black"
-        app:trackColor="#262626" />
+        android:checked="true"
+        android:buttonTint="@color/black" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="120dp"
     android:paddingHorizontal="14dp">
 
 
@@ -11,26 +11,21 @@
         android:id="@+id/label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Checkbox"
+        android:text="Title"
         android:fontFamily="@font/twcenmtstd"
         android:textSize="24sp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textEdit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/checkbox"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/checkbox"
+    <EditText
+        android:id="@+id/textEdit"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_height="60dp"
+        android:buttonTint="@color/black"
+        android:checked="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/label"
-        app:layout_constraintTop_toTopOf="parent"
-        android:scaleX="1.75"
-        android:scaleY="1.75"
-        android:checked="true"
-        android:buttonTint="@color/black" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,7 @@
 package com.recyclerviewapp
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -10,6 +12,7 @@ import com.google.android.material.slider.Slider
 import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
 import kotlinx.android.synthetic.main.slider.view.*
+
 
 class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -47,7 +50,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         slider.valueTo = item.max
         slider.stepSize = item.step
 
-        slider.addOnChangeListener(Slider.OnChangeListener { slider, value, fromUser ->
+        slider.addOnChangeListener(Slider.OnChangeListener { _, value, _ ->
             run {
                 label.text = item.title + " (" + value.toInt() + ")"
                 item.value = value
@@ -61,6 +64,9 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var checkBox: CheckBox = itemView.findViewById(R.id.checkbox)
         checkBox.isChecked = item.value
+        checkBox.setOnCheckedChangeListener { _, b ->
+            item.value = b
+        }
     }
 
     private fun bindText(item: DataModel.Text) {
@@ -69,6 +75,21 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var textedit : EditText = itemView.findViewById(R.id.textEdit)
         textedit.setText(item.value)
+        textedit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                item.value = textedit.text.toString()
+            }
+        })
+    }
+
+    private fun bindHeader(item: DataModel.Header) {
+        var label : TextView = itemView.findViewById(R.id.label)
+        label.text = item.title
     }
 
     fun bind(dataModel: DataModel) {
@@ -77,6 +98,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             is DataModel.Slider -> bindSlider(dataModel)
             is DataModel.Checkbox -> bindCheckbox(dataModel)
             is DataModel.Text -> bindText(dataModel)
+            is DataModel.Header -> bindHeader(dataModel)
         }
     }
 }

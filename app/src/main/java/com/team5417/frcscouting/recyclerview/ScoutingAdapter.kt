@@ -21,6 +21,7 @@ class ScoutingAdapter : RecyclerView.Adapter<ScoutingViewHolder>() {
             TYPE_SLIDER -> R.layout.slider
             TYPE_CHECKBOX -> R.layout.checkbox
             TYPE_TEXT -> R.layout.text
+            TYPE_HEADER -> R.layout.header
             else -> throw IllegalArgumentException("Invalid type")
         }
 
@@ -46,7 +47,8 @@ class ScoutingAdapter : RecyclerView.Adapter<ScoutingViewHolder>() {
             is DataModel.Number -> TYPE_NUMBER
             is DataModel.Slider -> TYPE_SLIDER
             is DataModel.Checkbox -> TYPE_CHECKBOX
-            else -> TYPE_TEXT
+            is DataModel.Text -> TYPE_TEXT
+            else -> TYPE_HEADER
         }
     }
 
@@ -62,5 +64,6 @@ class ScoutingAdapter : RecyclerView.Adapter<ScoutingViewHolder>() {
         private const val TYPE_SLIDER = 1
         private const val TYPE_CHECKBOX = 2
         private const val TYPE_TEXT = 3
+        private const val TYPE_HEADER = 4
     }
 }

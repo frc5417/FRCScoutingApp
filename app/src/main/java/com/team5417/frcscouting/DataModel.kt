@@ -3,6 +3,9 @@ package com.team5417.frcscouting
 import androidx.annotation.ColorInt
 
 sealed class DataModel {
+    data class Header(
+        val title: String
+    ) : DataModel()
     data class Number(
         val title: String,
         var value: Int,

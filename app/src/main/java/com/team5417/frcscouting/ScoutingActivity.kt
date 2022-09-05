@@ -39,9 +39,23 @@ class ScoutingActivity : AppCompatActivity() {
     }
 
     private fun getData(): List<DataModel> = listOf(
+        DataModel.Header(
+            title = "Autonomous Period"
+        ),
         DataModel.Checkbox(
             title = "Robot left TARMAC:",
             value = false
+        ),
+        DataModel.Number(
+            title = "Cargo Scored in Top:",
+            value = 0
+        ),
+        DataModel.Number(
+            title = "Cargo Scored in Bottom:",
+            value = 0
+        ),
+        DataModel.Header(
+            title = "TeleOP Period"
         ),
         DataModel.Number(
             title = "Cargo Scored in Top:",

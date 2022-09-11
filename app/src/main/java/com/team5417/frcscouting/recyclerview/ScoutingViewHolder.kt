@@ -110,7 +110,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
 
                 if(matchNumEdit.text.toString().length > 3) {
-                    matchNumEdit.setText(matchNumEdit.text.toString().substring(0, 4))
+                    matchNumEdit.setText(matchNumEdit.text.toString().substring(0, 3))
                     matchNumEdit.setSelection(matchNumEdit.length())
                 }
                 try {

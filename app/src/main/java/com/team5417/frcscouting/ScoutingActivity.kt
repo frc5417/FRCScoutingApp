@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ScrollView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
@@ -39,7 +40,41 @@ class ScoutingActivity : AppCompatActivity() {
 
         val exportBtn : Button = findViewById(R.id.idBtnGenerateQR)
         exportBtn.setOnClickListener {
-            startActivity(Intent(this, QRCodeActivity::class.java))
+            val models = dataAdapter.getData()
+            var isMatchNum = false;
+            var isTeamNum = false;
+            var dataToSend = ""
+            for (model in models) {
+                val toAdd = when (model) {
+                    is DataModel.Number -> model.id+"="+model.value.toString()
+                    is DataModel.Checkbox -> model.id+"="+if (model.value) "1" else "0"
+                    is DataModel.Text -> model.id+"="+model.value
+                    is DataModel.Slider -> model.id+"="+model.value.toString()
+                    is DataModel.MatchAndTeamNum -> {
+                        if(model.matchNum == -1) break;
+                        isMatchNum = true;
+                        if(model.teamNum == -1) break;
+                        isTeamNum = true;
+                        "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
+                    }
+                    else -> ""
+                }
+
+                if(toAdd != "") {
+                    if(dataToSend == "") dataToSend += toAdd
+                    else dataToSend += ",$toAdd"
+                }
+            }
+
+            if(!isMatchNum) {
+                Toast.makeText(this@ScoutingActivity, "No Match Number!", Toast.LENGTH_SHORT).show()
+            } else if(!isTeamNum) {
+                Toast.makeText(this@ScoutingActivity, "No Team Number!", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(this, QRCodeActivity::class.java)
+                intent.putExtra("data", dataToSend)
+                startActivity(intent)
+            }
         }
     }
 
@@ -55,12 +90,12 @@ class ScoutingActivity : AppCompatActivity() {
         ),
         DataModel.Number(
             id = "at",
-            title = "Cargo Scored in Top:",
+            title = "Top Cargo:",
             value = 0
         ),
         DataModel.Number(
             id = "ab",
-            title = "Cargo Scored in Bottom:",
+            title = "Bottom Cargo:",
             value = 0
         ),
         DataModel.Header(
@@ -68,12 +103,12 @@ class ScoutingActivity : AppCompatActivity() {
         ),
         DataModel.Number(
             id = "tt",
-            title = "Cargo Scored in Top:",
+            title = "Top Cargo:",
             value = 0
         ),
         DataModel.Number(
             id = "tb",
-            title = "Cargo Scored in Bottom:",
+            title = "Bottom Cargo:",
             value = 0
         ),
         DataModel.Slider(

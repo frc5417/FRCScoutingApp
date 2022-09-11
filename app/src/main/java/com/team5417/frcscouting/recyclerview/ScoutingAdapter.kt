@@ -54,6 +54,10 @@ class ScoutingAdapter : RecyclerView.Adapter<ScoutingViewHolder>() {
         }
     }
 
+    fun getData() : List<DataModel> {
+        return adapterData;
+    }
+
     fun setData(data: List<DataModel>) {
         adapterData.apply {
             clear()

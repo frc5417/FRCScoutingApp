@@ -3,10 +3,12 @@ package com.recyclerviewapp
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.slider.Slider
 import com.team5417.frcscouting.DataModel
@@ -75,6 +77,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var textedit : EditText = itemView.findViewById(R.id.textEdit)
         textedit.setText(item.value)
+
         textedit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
@@ -83,6 +86,68 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 before: Int, count: Int
             ) {
                 item.value = textedit.text.toString()
+            }
+        })
+    }
+
+    private fun bindMatchAndTeamNum(item: DataModel.MatchAndTeamNum) {
+        var matchNumEdit : EditText = itemView.findViewById(R.id.matchNum)
+        matchNumEdit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if(matchNumEdit.text.toString().length == 0) {
+                    item.teamNum = -1
+                    return
+                }
+
+                if(matchNumEdit.text.toString().contains('-')) {
+                    matchNumEdit.setText(matchNumEdit.text.toString().replace("-", ""));
+                    matchNumEdit.setSelection(matchNumEdit.length())
+                }
+
+                if(matchNumEdit.text.toString().length > 3) {
+                    matchNumEdit.setText(matchNumEdit.text.toString().substring(0, 4))
+                    matchNumEdit.setSelection(matchNumEdit.length())
+                }
+                try {
+                    item.matchNum = matchNumEdit.text.toString().toInt()
+                } catch (e: NumberFormatException) {
+                    matchNumEdit.setText("")
+                }
+            }
+        })
+
+        var teamNumEdit : EditText = itemView.findViewById(R.id.teamNum)
+        teamNumEdit.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
+            override fun onTextChanged(
+                s: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+                if(teamNumEdit.text.toString().length == 0) {
+                    item.teamNum = -1
+                    return
+                }
+
+                if(teamNumEdit.text.toString().contains('-')) {
+                    teamNumEdit.setText(teamNumEdit.text.toString().replace("-", ""));
+                    teamNumEdit.setSelection(teamNumEdit.length())
+                }
+
+                if(teamNumEdit.text.toString().length > 4) {
+                    teamNumEdit.setText(teamNumEdit.text.toString().substring(0, 4))
+                    teamNumEdit.setSelection(teamNumEdit.length())
+                }
+                try {
+                    item.teamNum = teamNumEdit.text.toString().toInt()
+                } catch (e: NumberFormatException) {
+                    teamNumEdit.setText("")
+                }
             }
         })
     }
@@ -99,6 +164,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             is DataModel.Checkbox -> bindCheckbox(dataModel)
             is DataModel.Text -> bindText(dataModel)
             is DataModel.Header -> bindHeader(dataModel)
+            is DataModel.MatchAndTeamNum -> bindMatchAndTeamNum(dataModel)
         }
     }
 }

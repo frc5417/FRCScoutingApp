@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.team5417.frcscouting.ScoutingActivity" android:exported="true">
+        <activity android:name="com.team5417.frcscouting.ScoutingActivity" android:exported="true" android:windowSoftInputMode="adjustPan">
+
+        </activity>
+        <activity android:name="com.team5417.frcscouting.QRCodeActivity" android:exported="true">
 
         </activity>
     </application>

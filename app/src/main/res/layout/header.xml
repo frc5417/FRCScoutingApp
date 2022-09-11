@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
+    android:layout_height="50dp"
     android:paddingHorizontal="14dp">
 
 
@@ -13,9 +13,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/twcenmtstd"
         android:text="Title"
-        android:textStyle="bold"
         android:textColor="@color/black"
         android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

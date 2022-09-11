@@ -21,36 +21,45 @@ class ScoutingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scouting)
 
         dataAdapter.setData(getData())
-        findViewById<RecyclerView>(R.id.mainView)
-            .apply {
+        val mainView = findViewById<RecyclerView>(R.id.mainView);
+        mainView.apply {
                 layoutManager = LinearLayoutManager(this@ScoutingActivity)
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
 
-        configureBackBtn()
+        configureBtns()
     }
 
-    private fun configureBackBtn() {
+    private fun configureBtns() {
         val backBtn : Button = findViewById(R.id.backBtn);
         backBtn.setOnClickListener {
             finish();
         }
+
+        val exportBtn : Button = findViewById(R.id.idBtnGenerateQR)
+        exportBtn.setOnClickListener {
+            startActivity(Intent(this, QRCodeActivity::class.java))
+        }
     }
 
     private fun getData(): List<DataModel> = listOf(
+        DataModel.MatchAndTeamNum(),
         DataModel.Header(
             title = "Autonomous Period"
         ),
         DataModel.Checkbox(
+            id = "ta",
             title = "Robot left TARMAC:",
             value = false
         ),
         DataModel.Number(
+            id = "at",
             title = "Cargo Scored in Top:",
             value = 0
         ),
         DataModel.Number(
+            id = "ab",
             title = "Cargo Scored in Bottom:",
             value = 0
         ),
@@ -58,24 +67,29 @@ class ScoutingActivity : AppCompatActivity() {
             title = "TeleOP Period"
         ),
         DataModel.Number(
+            id = "tt",
             title = "Cargo Scored in Top:",
             value = 0
         ),
         DataModel.Number(
+            id = "tb",
             title = "Cargo Scored in Bottom:",
             value = 0
         ),
         DataModel.Slider(
+            id = "dc",
             title = "Driver Competence",
             value = 0.0f,
             max = 5.0f
         ),
         DataModel.Slider(
+            id = "df",
             title = "Defensive",
             value = 0.0f,
             max = 5.0f
         ),
         DataModel.Text(
+            id = "n",
             title = "Notes:",
             value = ""
         )

@@ -39,6 +39,8 @@ class QRCodeActivity : AppCompatActivity() {
     }
 
     private fun genQRCode(message: String) {
+        // credit: https://www.geeksforgeeks.org/generate-qr-code-in-android-using-kotlin/
+
         // on below line we are getting service for window manager
         val windowManager: WindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
 

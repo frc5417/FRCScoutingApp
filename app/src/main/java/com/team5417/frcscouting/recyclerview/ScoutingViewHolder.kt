@@ -13,23 +13,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.slider.Slider
 import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
+import com.team5417.frcscouting.recyclerview.ScoutingAdapter
 import kotlinx.android.synthetic.main.slider.view.*
 
 
-class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    private val adapter : ScoutingAdapter = adter;
 
     private fun bindNumber(item: DataModel.Number) {
         var label : TextView = itemView.findViewById(R.id.label)
         label.text = item.title
 
         var num : TextView = itemView.findViewById(R.id.number)
-        num.setText(item.value.toString())
+        num.text = item.value.toString()
 
         var downBtn : Button = itemView.findViewById(R.id.btnDown)
         downBtn.setOnClickListener {
             if(item.value - item.step >= item.min) {
                 item.value -= item.step
-                num.setText(item.value.toString())
+                num.text = item.value.toString()
+                adapter.saveUnsavedData();
             }
         }
 
@@ -37,7 +41,8 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         upBtn.setOnClickListener {
             if(item.value + item.step <= item.max) {
                 item.value += item.step
-                num.setText(item.value.toString())
+                num.text = item.value.toString()
+                adapter.saveUnsavedData()
             }
         }
     }
@@ -56,6 +61,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             run {
                 label.text = item.title + " (" + value.toInt() + ")"
                 item.value = value
+                adapter.saveUnsavedData()
             }
         })
     }
@@ -68,6 +74,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         checkBox.isChecked = item.value
         checkBox.setOnCheckedChangeListener { _, b ->
             item.value = b
+            adapter.saveUnsavedData()
         }
     }
 
@@ -86,12 +93,14 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 before: Int, count: Int
             ) {
                 item.value = textedit.text.toString()
+                adapter.saveUnsavedData();
             }
         })
     }
 
     private fun bindMatchAndTeamNum(item: DataModel.MatchAndTeamNum) {
         var matchNumEdit : EditText = itemView.findViewById(R.id.matchNum)
+        if(item.matchNum != -1) matchNumEdit.setText(item.matchNum)
         matchNumEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
@@ -99,8 +108,9 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                if(matchNumEdit.text.toString().length == 0) {
-                    item.teamNum = -1
+                if(matchNumEdit.text.toString().isEmpty()) {
+                    item.matchNum = -1
+                    adapter.saveUnsavedData();
                     return
                 }
 
@@ -115,6 +125,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
                 try {
                     item.matchNum = matchNumEdit.text.toString().toInt()
+                    adapter.saveUnsavedData();
                 } catch (e: NumberFormatException) {
                     matchNumEdit.setText("")
                 }
@@ -122,6 +133,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         })
 
         var teamNumEdit : EditText = itemView.findViewById(R.id.teamNum)
+        if(item.teamNum != -1) teamNumEdit.setText(item.teamNum)
         teamNumEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
@@ -129,8 +141,9 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
-                if(teamNumEdit.text.toString().length == 0) {
+                if(teamNumEdit.text.toString().isEmpty()) {
                     item.teamNum = -1
+                    adapter.saveUnsavedData();
                     return
                 }
 
@@ -145,6 +158,7 @@ class ScoutingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 }
                 try {
                     item.teamNum = teamNumEdit.text.toString().toInt()
+                    adapter.saveUnsavedData();
                 } catch (e: NumberFormatException) {
                     teamNumEdit.setText("")
                 }

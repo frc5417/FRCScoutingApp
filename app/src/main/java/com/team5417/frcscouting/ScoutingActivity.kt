@@ -1,5 +1,6 @@
 package com.team5417.frcscouting
 
+import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
@@ -10,18 +11,79 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
+import java.io.File
 
 class ScoutingActivity : AppCompatActivity() {
 
     private val dataAdapter: ScoutingAdapter by lazy {
-        ScoutingAdapter()
+        ScoutingAdapter(this)
+    }
+
+    private fun getCachedValues() : List<DataModel> {
+        val adapterData = getData()
+
+        val filename = "storageFile"
+        if(!File(filesDir, filename).exists()) return adapterData
+
+        openFileInput(filename).bufferedReader().useLines { lines ->
+            try {
+                val line = lines.first();
+                if(line != "") {
+                    val unSaved = line.split("|||")[0]
+                    unSaved.split(",").forEach { csv ->
+                        if(csv.contains('=')) {
+                            val id = csv.split("=")[0]
+                            val value = csv.split("=")[1]
+                            adapterData.forEach { model ->
+                                when (model) {
+                                    is DataModel.Number -> {
+                                        if(model.id == id) {
+                                            model.value = value.toInt()
+                                        }
+                                    }
+                                    is DataModel.Checkbox -> {
+                                        if(model.id == id) {
+                                            model.value = value == "1"
+                                        }
+                                    }
+                                    is DataModel.Text -> {
+                                        if(model.id == id) {
+                                            model.value = value
+                                        }
+                                    }
+                                    is DataModel.Slider -> {
+                                        if(model.id == id) {
+                                            model.value = value.toFloat()
+                                        }
+                                    }
+                                    is DataModel.MatchAndTeamNum -> {
+                                        if(id == "mn") {
+                                            model.matchNum = value.toInt()
+                                        } else if(id == "tn") {
+                                            model.teamNum = value.toInt()
+                                        }
+                                    }
+                                    else -> ""
+                                }
+                            }
+                        }
+                    }
+
+                    if(line.split("|||").size > 1) {
+                        val savedData = line.split("|||")[1].split("||")
+                    }
+                }
+            } catch (e: NoSuchElementException) {}
+        }
+
+        return adapterData
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scouting)
 
-        dataAdapter.setData(getData())
+        dataAdapter.setData(getCachedValues())
         val mainView = findViewById<RecyclerView>(R.id.mainView);
         mainView.apply {
                 layoutManager = LinearLayoutManager(this@ScoutingActivity)

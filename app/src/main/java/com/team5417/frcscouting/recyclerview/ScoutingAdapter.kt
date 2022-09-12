@@ -1,14 +1,17 @@
 package com.team5417.frcscouting.recyclerview
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.recyclerviewapp.ScoutingViewHolder
 import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
+import com.team5417.frcscouting.ScoutingActivity
 
-class ScoutingAdapter : RecyclerView.Adapter<ScoutingViewHolder>() {
+class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<ScoutingViewHolder>() {
 
+    private val context = activity
     private val adapterData = mutableListOf<DataModel>()
 
     override fun onCreateViewHolder(
@@ -30,7 +33,7 @@ class ScoutingAdapter : RecyclerView.Adapter<ScoutingViewHolder>() {
             .from(parent.context)
             .inflate(layout, parent, false)
 
-        return ScoutingViewHolder(view)
+        return ScoutingViewHolder(this, view)
     }
 
 
@@ -62,6 +65,35 @@ class ScoutingAdapter : RecyclerView.Adapter<ScoutingViewHolder>() {
         adapterData.apply {
             clear()
             addAll(data)
+        }
+    }
+
+    fun saveUnsavedData() {
+        var dataToSave = ""
+        for (model in adapterData) {
+            val toAdd = when (model) {
+                is DataModel.Number -> model.id+"="+model.value.toString()
+                is DataModel.Checkbox -> model.id+"="+if (model.value) "1" else "0"
+                is DataModel.Text -> model.id+"="+model.value
+                is DataModel.Slider -> model.id+"="+model.value.toString()
+                is DataModel.MatchAndTeamNum -> {
+                    if(model.matchNum == -1) break;
+                    if(model.teamNum == -1) break;
+                    "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
+                }
+                else -> ""
+            }
+
+            if(toAdd != "") {
+                if(dataToSave == "") dataToSave += toAdd
+                else dataToSave += ",$toAdd"
+            }
+        }
+        if(dataToSave.isNotEmpty()) {
+            val filename = "storageFile"
+            context.openFileOutput(filename, Context.MODE_PRIVATE).use {
+                it.write(dataToSave.toByteArray())
+            }
         }
     }
 

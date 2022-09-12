@@ -2,18 +2,20 @@ package com.team5417.frcscouting
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ScrollView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
 import java.io.File
+import java.io.FileOutputStream
 
 class ScoutingActivity : AppCompatActivity() {
+
+    private var savedQRCodes = mutableListOf<String>();
+    private val filename = "storageFile"
 
     private val dataAdapter: ScoutingAdapter by lazy {
         ScoutingAdapter(this)
@@ -22,44 +24,43 @@ class ScoutingActivity : AppCompatActivity() {
     private fun getCachedValues() : List<DataModel> {
         val adapterData = getData()
 
-        val filename = "storageFile"
+        if(!filesDir.exists()) filesDir.mkdir()
         if(!File(filesDir, filename).exists()) return adapterData
 
         openFileInput(filename).bufferedReader().useLines { lines ->
             try {
                 val line = lines.first();
                 if(line != "") {
-                    val unSaved = line.split("|||")[0]
-                    unSaved.split(",").forEach { csv ->
-                        if(csv.contains('=')) {
+                    line.split(",").forEach { csv ->
+                        if (csv.contains('=')) {
                             val id = csv.split("=")[0]
                             val value = csv.split("=")[1]
                             adapterData.forEach { model ->
                                 when (model) {
                                     is DataModel.Number -> {
-                                        if(model.id == id) {
+                                        if (model.id == id) {
                                             model.value = value.toInt()
                                         }
                                     }
                                     is DataModel.Checkbox -> {
-                                        if(model.id == id) {
+                                        if (model.id == id) {
                                             model.value = value == "1"
                                         }
                                     }
                                     is DataModel.Text -> {
-                                        if(model.id == id) {
+                                        if (model.id == id) {
                                             model.value = value
                                         }
                                     }
                                     is DataModel.Slider -> {
-                                        if(model.id == id) {
+                                        if (model.id == id) {
                                             model.value = value.toFloat()
                                         }
                                     }
                                     is DataModel.MatchAndTeamNum -> {
-                                        if(id == "mn") {
+                                        if (id == "mn") {
                                             model.matchNum = value.toInt()
-                                        } else if(id == "tn") {
+                                        } else if (id == "tn") {
                                             model.teamNum = value.toInt()
                                         }
                                     }
@@ -68,12 +69,16 @@ class ScoutingActivity : AppCompatActivity() {
                             }
                         }
                     }
-
-                    if(line.split("|||").size > 1) {
-                        val savedData = line.split("|||")[1].split("||")
-                    }
                 }
             } catch (e: NoSuchElementException) {}
+        }
+
+        val filenameSaved = "storageFileCompleted"
+
+        if(File(filesDir, filenameSaved).exists()) {
+            openFileInput(filename).bufferedReader().useLines { lines ->
+                lines.forEach { line -> savedQRCodes.add(line) }
+            }
         }
 
         return adapterData
@@ -133,6 +138,12 @@ class ScoutingActivity : AppCompatActivity() {
             } else if(!isTeamNum) {
                 Toast.makeText(this@ScoutingActivity, "No Team Number!", Toast.LENGTH_SHORT).show()
             } else {
+                val fos: FileOutputStream = openFileOutput(filename, Context.MODE_PRIVATE)
+                fos.write("".toByteArray())
+                fos.close()
+
+                dataAdapter.setData(getCachedValues())
+
                 val intent = Intent(this, QRCodeActivity::class.java)
                 intent.putExtra("data", dataToSend)
                 startActivity(intent)

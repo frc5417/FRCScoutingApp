@@ -3,19 +3,15 @@ package com.recyclerviewapp
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
-import androidx.core.view.marginBottom
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.slider.Slider
 import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
-import kotlinx.android.synthetic.main.slider.view.*
-
 
 class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -100,7 +96,8 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
 
     private fun bindMatchAndTeamNum(item: DataModel.MatchAndTeamNum) {
         var matchNumEdit : EditText = itemView.findViewById(R.id.matchNum)
-        if(item.matchNum != -1) matchNumEdit.setText(item.matchNum)
+        if(item.matchNum != -1) matchNumEdit.setText(item.matchNum.toString())
+        else matchNumEdit.setText("")
         matchNumEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
@@ -133,7 +130,8 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
         })
 
         var teamNumEdit : EditText = itemView.findViewById(R.id.teamNum)
-        if(item.teamNum != -1) teamNumEdit.setText(item.teamNum)
+        if(item.teamNum != -1) teamNumEdit.setText(item.teamNum.toString())
+        else teamNumEdit.setText("")
         teamNumEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}

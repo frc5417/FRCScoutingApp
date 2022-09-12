@@ -1,18 +1,25 @@
 package com.team5417.frcscouting.recyclerview
 
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.recyclerviewapp.ScoutingViewHolder
 import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
 import com.team5417.frcscouting.ScoutingActivity
+import java.io.FileOutputStream
+
 
 class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<ScoutingViewHolder>() {
 
     private val context = activity
     private val adapterData = mutableListOf<DataModel>()
+    private lateinit var scoutingViewHolder : ScoutingViewHolder;
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -33,7 +40,9 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
             .from(parent.context)
             .inflate(layout, parent, false)
 
-        return ScoutingViewHolder(this, view)
+        scoutingViewHolder = ScoutingViewHolder(this, view)
+
+        return scoutingViewHolder
     }
 
 
@@ -66,9 +75,11 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
             clear()
             addAll(data)
         }
+
+        notifyDataSetChanged()
     }
 
-    fun saveUnsavedData() {
+    fun getDataToSave() : String {
         var dataToSave = ""
         for (model in adapterData) {
             val toAdd = when (model) {
@@ -76,11 +87,7 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
                 is DataModel.Checkbox -> model.id+"="+if (model.value) "1" else "0"
                 is DataModel.Text -> model.id+"="+model.value
                 is DataModel.Slider -> model.id+"="+model.value.toString()
-                is DataModel.MatchAndTeamNum -> {
-                    if(model.matchNum == -1) break;
-                    if(model.teamNum == -1) break;
-                    "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
-                }
+                is DataModel.MatchAndTeamNum -> "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
                 else -> ""
             }
 
@@ -89,11 +96,25 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
                 else dataToSave += ",$toAdd"
             }
         }
+
+        return dataToSave;
+    }
+
+    fun saveUnsavedData() {
+        val dataToSave = getDataToSave();
+
         if(dataToSave.isNotEmpty()) {
-            val filename = "storageFile"
-            context.openFileOutput(filename, Context.MODE_PRIVATE).use {
-                it.write(dataToSave.toByteArray())
-            }
+            Handler().postDelayed({
+                if(dataToSave == getDataToSave()) {
+                    val filename = "storageFile"
+
+                    val fos: FileOutputStream = context.openFileOutput(filename, Context.MODE_PRIVATE)
+                    fos.write(dataToSave.toByteArray())
+                    fos.close()
+
+                    println("Saving unsaved")
+                }
+            }, 500)
         }
     }
 

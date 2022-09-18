@@ -45,7 +45,11 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
 
     private fun bindSlider(item: DataModel.Slider) {
         var label : TextView = itemView.findViewById(R.id.label)
-        label.text = item.title + " (" + item.value.toInt() + ")"
+        if(item.value.toInt() == -1) {
+            label.text = item.title + " (None)"
+        } else {
+            label.text = item.title + " (" + item.value.toInt() + ")"
+        }
 
         var slider: Slider = itemView.findViewById(R.id.slider)
         slider.value = item.value
@@ -55,7 +59,11 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
 
         slider.addOnChangeListener(Slider.OnChangeListener { _, value, _ ->
             run {
-                label.text = item.title + " (" + value.toInt() + ")"
+                if(value.toInt() == -1) {
+                    label.text = item.title + " (None)"
+                } else {
+                    label.text = item.title + " (" + value.toInt() + ")"
+                }
                 item.value = value
                 adapter.saveUnsavedData()
             }

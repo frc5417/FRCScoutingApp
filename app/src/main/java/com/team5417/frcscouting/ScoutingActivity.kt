@@ -16,9 +16,23 @@ class ScoutingActivity : AppCompatActivity() {
 
     private var savedQRCodes = mutableListOf<String>();
     private val filename = "storageFile"
+    private val savedFilename = "savedStorageFile"
 
     private val dataAdapter: ScoutingAdapter by lazy {
         ScoutingAdapter(this)
+    }
+
+    private fun getSavedValues() {
+        if(!filesDir.exists()) filesDir.mkdir()
+        if(!File(filesDir, savedFilename).exists()) return
+        savedQRCodes.clear()
+        openFileInput(filename).bufferedReader().useLines { lines ->
+            try {
+                for (line in lines) {
+                    savedQRCodes.add(line);
+                }
+            } catch (e: NoSuchElementException) {}
+        }
     }
 
     private fun getCachedValues() : List<DataModel> {
@@ -89,6 +103,7 @@ class ScoutingActivity : AppCompatActivity() {
         setContentView(R.layout.activity_scouting)
 
         dataAdapter.setData(getCachedValues())
+        getSavedValues()
         val mainView = findViewById<RecyclerView>(R.id.mainView);
         mainView.apply {
                 layoutManager = LinearLayoutManager(this@ScoutingActivity)
@@ -186,15 +201,16 @@ class ScoutingActivity : AppCompatActivity() {
         ),
         DataModel.Slider(
             id = "dc",
-            title = "Driver Competence",
+            title = "Driver Comp:",
             value = 0.0f,
             max = 5.0f
         ),
         DataModel.Slider(
             id = "df",
             title = "Defensive",
-            value = 0.0f,
-            max = 5.0f
+            max = 5.0f,
+            min = -1.0f,
+            value = -1.0f
         ),
         DataModel.Text(
             id = "n",

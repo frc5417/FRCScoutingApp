@@ -30,7 +30,7 @@
             android:fontFamily="@font/twcenmtstd"
             android:textSize="20sp"
             android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/slider"
@@ -50,7 +50,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label"
         app:layout_constraintTop_toTopOf="parent"
-        app:thumbColor="@color/black"
-        app:trackColor="#262626" />
+        app:thumbColor="@color/white"
+        app:trackColorActive="@color/black"
+        app:trackColor="@color/gray" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

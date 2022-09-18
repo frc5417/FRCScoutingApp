@@ -85,7 +85,7 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
             val toAdd = when (model) {
                 is DataModel.Number -> model.id+"="+model.value.toString()
                 is DataModel.Checkbox -> model.id+"="+if (model.value) "1" else "0"
-                is DataModel.Text -> model.id+"="+model.value
+                is DataModel.Text -> model.id+"="+model.value.replace("\n", "")
                 is DataModel.Slider -> model.id+"="+model.value.toString()
                 is DataModel.MatchAndTeamNum -> "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
                 else -> ""

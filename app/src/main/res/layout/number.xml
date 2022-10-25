@@ -70,7 +70,7 @@
                 android:fontFamily="@font/tw_cen_mt_std_font_family"
                 android:text="999"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/btnDown"

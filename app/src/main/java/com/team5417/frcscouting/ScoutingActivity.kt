@@ -2,15 +2,17 @@ package com.team5417.frcscouting
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
 import java.io.File
 import java.io.FileOutputStream
+import java.util.*
+
 
 class ScoutingActivity : AppCompatActivity() {
 
@@ -159,8 +161,10 @@ class ScoutingActivity : AppCompatActivity() {
 
                 dataAdapter.setData(getCachedValues())
 
+                savedQRCodes.add(dataToSend)
+
                 val intent = Intent(this, QRCodeActivity::class.java)
-                intent.putExtra("data", dataToSend)
+                intent.putStringArrayListExtra("data", savedQRCodes as ArrayList<String>)
                 startActivity(intent)
             }
         }

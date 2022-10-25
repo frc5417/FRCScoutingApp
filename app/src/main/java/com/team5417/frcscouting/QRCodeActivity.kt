@@ -1,31 +1,88 @@
 package com.team5417.frcscouting
 
+import android.animation.ValueAnimator
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
-import android.view.Display
-import android.view.WindowManager
+import android.view.*
+import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import com.team5417.frcscouting.listeners.OnSwipeTouchListener
 
 class QRCodeActivity : AppCompatActivity() {
 
     lateinit var qrEncoder: QRGEncoder
     lateinit var bitmap: Bitmap
-    lateinit var qrIV: ImageView
+    lateinit var qrNext: ImageView
+    lateinit var qrCurrent: ImageView
+    lateinit var label: TextView
+    private var qrCodeData: List<String> = mutableListOf()
+    private var currentIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrcodes)
 
-        qrIV = findViewById(R.id.idIVQrcode)
+        println("qrcode activity")
+        println(qrCodeData.size)
+
+        currentIndex = 0;
+        qrCodeData = mutableListOf()
+
+        label = findViewById(R.id.label)
+        qrNext = findViewById(R.id.QRCodeNext)
+        qrCurrent = findViewById(R.id.QRCodeCurrent)
 
         val extras = intent.extras;
         if(extras != null) {
-            extras.getString("data")?.let { genQRCode(it) }
+            extras.getStringArrayList("data")?.let {
+                qrCodeData = it
+                genQRCode(qrCodeData[currentIndex], qrCurrent)
+            }
+        }
+
+        label.text = "QRCode - 1/" + qrCodeData.size +  " | Match: "
+
+        val valueAnimator = ValueAnimator.ofFloat(-Resources.getSystem().displayMetrics.widthPixels.toFloat(), 0f);
+        valueAnimator.addUpdateListener {
+            val value = it.animatedValue as Float
+            qrNext.translationX = value
+            qrCurrent.translationX = -value
+        }
+        valueAnimator.interpolator = LinearInterpolator()
+        valueAnimator.duration = 1000
+
+        class QRCodeSwipeListener : OnSwipeTouchListener(applicationContext) {
+            override fun onSwipeLeft() {
+//                println("swipe left")
+                if(currentIndex <= 0 || valueAnimator.isRunning) return
+                currentIndex -= 1
+                genQRCode(qrCodeData[currentIndex], qrNext)
+                valueAnimator.start()
+            }
+
+            override fun onSwipeRight() {
+//                println("swipe right")
+                if(currentIndex >= qrCodeData.size - 1 || valueAnimator.isRunning) return
+                currentIndex -= 1
+                genQRCode(qrCodeData[currentIndex], qrNext)
+                valueAnimator.start()
+            }
+        }
+
+        var listener = QRCodeSwipeListener();
+
+        var main: View = findViewById(R.id.touchListener)
+        main.setOnTouchListener { v, event ->
+            println("onTouch triggered")
+            listener.onTouch(v, event)
         }
 
         configureBtns()
@@ -38,7 +95,7 @@ class QRCodeActivity : AppCompatActivity() {
         }
     }
 
-    private fun genQRCode(message: String) {
+    private fun genQRCode(message: String, target: ImageView) {
         // credit: https://www.geeksforgeeks.org/generate-qr-code-in-android-using-kotlin/
 
         // on below line we are getting service for window manager
@@ -75,12 +132,18 @@ class QRCodeActivity : AppCompatActivity() {
 
             // on below line we are setting
             // this bitmap to our image view
-            qrIV.setImageBitmap(bitmap)
+            target.setImageBitmap(bitmap)
         } catch (e: Exception) {
             // on below line we
             // are handling exception
             e.printStackTrace()
         }
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+
+
+        return super.onTouchEvent(event)
     }
 
 }

@@ -51,9 +51,20 @@
         android:id="@+id/idBtnGenerateQR"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:backgroundTint="#6a000000"
         android:text="Export Data"
         android:textAllCaps="false"
+        android:layout_marginLeft="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/idBtnViewQR"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="#6a000000"
+        android:text="View QR Codes"
+        android:textAllCaps="false"
         android:layout_marginRight="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

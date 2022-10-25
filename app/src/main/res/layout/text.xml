@@ -25,6 +25,8 @@
         android:inputType="textMultiLine"
         android:layout_height="60dp"
         android:buttonTint="@color/white"
+        android:textColor="@color/white"
+        android:paddingHorizontal="10dp"
         android:checked="true"
         android:background="@drawable/edittext_border"
         app:layout_constraintBottom_toBottomOf="parent"

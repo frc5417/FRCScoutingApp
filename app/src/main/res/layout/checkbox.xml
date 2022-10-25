@@ -49,6 +49,7 @@
             android:scaleX="1.75"
             android:scaleY="1.75"
             android:checked="true"
-            android:buttonTint="@color/gray" />
+            android:buttonTint="@color/white"
+            />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

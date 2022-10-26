@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Point
 import android.os.Bundle
+import android.os.Handler
 import android.view.*
 import android.view.animation.LinearInterpolator
 import android.widget.Button
@@ -13,7 +14,6 @@ import android.widget.TextView
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.team5417.frcscouting.listeners.OnSwipeTouchListener
 
 class QRCodeActivity : AppCompatActivity() {
@@ -48,41 +48,76 @@ class QRCodeActivity : AppCompatActivity() {
             }
         }
 
-        label.text = "QRCode - 1/" + qrCodeData.size +  " | Match: "
+        if(qrCodeData.isNotEmpty()) {
 
-        val valueAnimator = ValueAnimator.ofFloat(-Resources.getSystem().displayMetrics.widthPixels.toFloat(), 0f);
-        valueAnimator.addUpdateListener {
-            val value = it.animatedValue as Float
-            qrNext.translationX = value
-            qrCurrent.translationX = -value
-        }
-        valueAnimator.interpolator = LinearInterpolator()
-        valueAnimator.duration = 1000
+            label.text = "QRCode - ${currentIndex + 1}/" + qrCodeData.size +  " | Match: " + qrCodeData[0].split(",").find { it.startsWith("mn=") }!!
+                .split("=")[1]+  " | Team: " + qrCodeData[0].split(",").find { it.startsWith("tn=") }!!
+                .split("=")[1]
 
-        class QRCodeSwipeListener : OnSwipeTouchListener(applicationContext) {
-            override fun onSwipeLeft() {
-//                println("swipe left")
-                if(currentIndex <= 0 || valueAnimator.isRunning) return
-                currentIndex -= 1
-                genQRCode(qrCodeData[currentIndex], qrNext)
-                valueAnimator.start()
+            val width = Resources.getSystem().displayMetrics.widthPixels.toFloat();
+            val valueAnimatorLeft = ValueAnimator.ofFloat(-width, 0f);
+            valueAnimatorLeft.addUpdateListener {
+                val value = it.animatedValue as Float
+                qrNext.translationX =  -value
+                qrCurrent.translationX = -width - value
+            }
+            valueAnimatorLeft.interpolator = LinearInterpolator()
+            valueAnimatorLeft.duration = 500
+
+            val valueAnimatorRight = ValueAnimator.ofFloat(-width, 0f);
+            valueAnimatorRight.addUpdateListener {
+                val value = it.animatedValue as Float
+                qrNext.translationX = value
+                qrCurrent.translationX = width + value
+            }
+            valueAnimatorRight.interpolator = LinearInterpolator()
+            valueAnimatorRight.duration = 500
+
+            class QRCodeSwipeListener : OnSwipeTouchListener(applicationContext) {
+                override fun onSwipeLeft() {
+                    if(currentIndex >= qrCodeData.size - 1 || valueAnimatorLeft.isRunning) return
+                    currentIndex += 1
+                    genQRCode(qrCodeData[currentIndex], qrNext)
+                    valueAnimatorLeft.start()
+
+                    label.text = "QRCode - ${currentIndex + 1}/" + qrCodeData.size +  " | Match: " + qrCodeData[currentIndex].split(",").find { it.startsWith("mn=") }!!
+                        .split("=")[1]+  " | Team: " + qrCodeData[currentIndex].split(",").find { it.startsWith("tn=") }!!
+                        .split("=")[1]
+
+                    val handler = Handler()
+                    handler.postDelayed(Runnable {
+                        qrNext.translationX = -width
+                        qrCurrent.translationX = 0f
+                        genQRCode(qrCodeData[currentIndex], qrCurrent)
+                    }, 500)
+                }
+
+                override fun onSwipeRight() {
+                    if(currentIndex <= 0 || valueAnimatorLeft.isRunning) return
+                    currentIndex -= 1
+                    genQRCode(qrCodeData[currentIndex], qrNext)
+                    valueAnimatorRight.start()
+
+                    label.text = "QRCode - ${currentIndex + 1}/" + qrCodeData.size +  " | Match: " + qrCodeData[currentIndex].split(",").find { it.startsWith("mn=") }!!
+                        .split("=")[1]+  " | Team: " + qrCodeData[currentIndex].split(",").find { it.startsWith("tn=") }!!
+                        .split("=")[1]
+
+                    val handler = Handler()
+                    handler.postDelayed(Runnable {
+                        qrNext.translationX = -width
+                        qrCurrent.translationX = 0f
+                        genQRCode(qrCodeData[currentIndex], qrCurrent)
+                    }, 500)
+                }
             }
 
-            override fun onSwipeRight() {
-//                println("swipe right")
-                if(currentIndex >= qrCodeData.size - 1 || valueAnimator.isRunning) return
-                currentIndex -= 1
-                genQRCode(qrCodeData[currentIndex], qrNext)
-                valueAnimator.start()
+            var listener = QRCodeSwipeListener();
+
+            var main: View = findViewById(R.id.touchListener)
+            main.setOnTouchListener { v, event ->
+                listener.onTouch(v, event)
             }
-        }
 
-        var listener = QRCodeSwipeListener();
-
-        var main: View = findViewById(R.id.touchListener)
-        main.setOnTouchListener { v, event ->
-            println("onTouch triggered")
-            listener.onTouch(v, event)
         }
 
         configureBtns()

@@ -163,10 +163,21 @@ class ScoutingActivity : AppCompatActivity() {
 
                 savedQRCodes.add(dataToSend)
 
+                val fosSaved: FileOutputStream = openFileOutput(savedFilename, Context.MODE_PRIVATE)
+                fosSaved.write(savedQRCodes.joinToString("\n").toByteArray())
+                fosSaved.close()
+
                 val intent = Intent(this, QRCodeActivity::class.java)
                 intent.putStringArrayListExtra("data", savedQRCodes as ArrayList<String>)
                 startActivity(intent)
             }
+        }
+
+        val viewBtn : Button = findViewById(R.id.idBtnViewQR)
+        viewBtn.setOnClickListener {
+            val intent = Intent(this, QRCodeActivity::class.java)
+            intent.putStringArrayListExtra("data", savedQRCodes as ArrayList<String>)
+            startActivity(intent)
         }
     }
 

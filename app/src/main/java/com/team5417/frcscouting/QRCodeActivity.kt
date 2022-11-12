@@ -1,6 +1,8 @@
 package com.team5417.frcscouting
 
 import android.animation.ValueAnimator
+import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Point
@@ -11,10 +13,15 @@ import android.view.animation.LinearInterpolator
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidmads.library.qrgenearator.QRGContents
 import androidmads.library.qrgenearator.QRGEncoder
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.team5417.frcscouting.listeners.OnSwipeTouchListener
+import java.io.FileOutputStream
+import java.util.ArrayList
+
 
 class QRCodeActivity : AppCompatActivity() {
 
@@ -23,28 +30,29 @@ class QRCodeActivity : AppCompatActivity() {
     lateinit var qrNext: ImageView
     lateinit var qrCurrent: ImageView
     lateinit var label: TextView
-    private var qrCodeData: List<String> = mutableListOf()
+    var width: Float = 0.0f
+    private var qrCodeData: MutableList<String> = mutableListOf()
     private var currentIndex: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_qrcodes)
 
-        println("qrcode activity")
-        println(qrCodeData.size)
+//        println("qrcode activity")
+//        println(qrCodeData.size)
 
-        currentIndex = 0;
+        currentIndex = 0
         qrCodeData = mutableListOf()
 
         label = findViewById(R.id.label)
         qrNext = findViewById(R.id.QRCodeNext)
         qrCurrent = findViewById(R.id.QRCodeCurrent)
 
-        val extras = intent.extras;
+        val extras = intent.extras
         if(extras != null) {
             extras.getStringArrayList("data")?.let {
                 qrCodeData = it
-                genQRCode(qrCodeData[currentIndex], qrCurrent)
+                if(qrCodeData.size > 0) genQRCode(qrCodeData[currentIndex], qrCurrent)
             }
         }
 
@@ -54,8 +62,8 @@ class QRCodeActivity : AppCompatActivity() {
                 .split("=")[1]+  " | Team: " + qrCodeData[0].split(",").find { it.startsWith("tn=") }!!
                 .split("=")[1]
 
-            val width = Resources.getSystem().displayMetrics.widthPixels.toFloat();
-            val valueAnimatorLeft = ValueAnimator.ofFloat(-width, 0f);
+            width = Resources.getSystem().displayMetrics.widthPixels.toFloat()
+            val valueAnimatorLeft = ValueAnimator.ofFloat(-width, 0f)
             valueAnimatorLeft.addUpdateListener {
                 val value = it.animatedValue as Float
                 qrNext.translationX =  -value
@@ -64,7 +72,7 @@ class QRCodeActivity : AppCompatActivity() {
             valueAnimatorLeft.interpolator = LinearInterpolator()
             valueAnimatorLeft.duration = 500
 
-            val valueAnimatorRight = ValueAnimator.ofFloat(-width, 0f);
+            val valueAnimatorRight = ValueAnimator.ofFloat(-width, 0f)
             valueAnimatorRight.addUpdateListener {
                 val value = it.animatedValue as Float
                 qrNext.translationX = value
@@ -111,7 +119,7 @@ class QRCodeActivity : AppCompatActivity() {
                 }
             }
 
-            var listener = QRCodeSwipeListener();
+            var listener = QRCodeSwipeListener()
 
             var main: View = findViewById(R.id.touchListener)
             main.setOnTouchListener { v, event ->
@@ -124,10 +132,78 @@ class QRCodeActivity : AppCompatActivity() {
     }
 
     private fun configureBtns() {
-        val backBtn : Button = findViewById(R.id.backBtnQRCode);
+        val backBtn : Button = findViewById(R.id.backBtnQRCode)
         backBtn.setOnClickListener {
-            finish();
+            val previousScreen = Intent(applicationContext, ScoutingActivity::class.java)
+            previousScreen.putStringArrayListExtra("data", qrCodeData as ArrayList<String>)
+            setResult(RESULT_OK, previousScreen)
+            finish()
         }
+
+        val trashBtn : Button = findViewById(R.id.deleteBtnQRCode)
+        trashBtn.setOnClickListener {
+            if(qrCodeData.size == 0) return@setOnClickListener
+
+            val builder = AlertDialog.Builder(this)
+            builder.setCancelable(true)
+            builder.setTitle("Delete QR Codes")
+            builder.setMessage("Do you want to delete one or all QR Codes?")
+
+            builder.setNeutralButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+
+            builder.setNegativeButton("One") { _, _ ->
+                qrCodeData.removeAt(currentIndex)
+
+                if(currentIndex >= qrCodeData.size) currentIndex = qrCodeData.size - 1
+
+                if(currentIndex >= 0) {
+                    label.text = "QRCode - ${currentIndex + 1}/" + qrCodeData.size +  " | Match: " + qrCodeData[currentIndex].split(",").find { it.startsWith("mn=") }!!
+                    .split("=")[1]+  " | Team: " + qrCodeData[currentIndex].split(",").find { it.startsWith("tn=") }!!
+                    .split("=")[1]
+
+                    qrNext.translationX = -width
+                    qrCurrent.translationX = 0f
+                    genQRCode(qrCodeData[currentIndex], qrCurrent)
+                } else {
+                    label.text = "QRCode - 0/0"
+
+                    qrNext.translationX = -width
+                    qrCurrent.translationX = -width
+                }
+
+                val fosSaved: FileOutputStream = openFileOutput("savedStorageFile", Context.MODE_PRIVATE)
+                fosSaved.write(qrCodeData.joinToString("\n").toByteArray())
+                fosSaved.close()
+
+                Toast.makeText(
+                    applicationContext,
+                    "Deleted that one!", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            builder.setPositiveButton("All") { _, _ ->
+                qrCodeData.clear()
+
+                val fosSaved: FileOutputStream = openFileOutput("savedStorageFile", Context.MODE_PRIVATE)
+                fosSaved.write("".toByteArray())
+                fosSaved.close()
+
+                val previousScreen = Intent(applicationContext, ScoutingActivity::class.java)
+                previousScreen.putStringArrayListExtra("data", qrCodeData as ArrayList<String>)
+                setResult(RESULT_OK, previousScreen)
+                finish()
+
+                Toast.makeText(
+                    applicationContext,
+                    "Deleted all!", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            builder.show()
+        }
+
     }
 
     private fun genQRCode(message: String, target: ImageView) {
@@ -175,10 +251,12 @@ class QRCodeActivity : AppCompatActivity() {
         }
     }
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
+    override fun onBackPressed() {
+        val previousScreen = Intent(applicationContext, ScoutingActivity::class.java)
+        previousScreen.putStringArrayListExtra("data", qrCodeData as ArrayList<String>)
+        setResult(RESULT_OK, previousScreen)
 
-
-        return super.onTouchEvent(event)
+        super.onBackPressed()
     }
 
 }

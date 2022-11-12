@@ -1,5 +1,6 @@
 package com.team5417.frcscouting
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,15 @@ class ScoutingActivity : AppCompatActivity() {
     private val filename = "storageFile"
     private val savedFilename = "savedStorageFile"
 
+    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data: Intent? = result.data
+            if (data != null) {
+                savedQRCodes = data.getStringArrayListExtra("data") as MutableList<String>
+            }
+        }
+    }
+
     private val dataAdapter: ScoutingAdapter by lazy {
         ScoutingAdapter(this)
     }
@@ -30,10 +41,14 @@ class ScoutingActivity : AppCompatActivity() {
         if(!filesDir.exists()) filesDir.mkdir()
         if(!File(filesDir, savedFilename).exists()) return
         savedQRCodes.clear()
-        openFileInput(filename).bufferedReader().useLines { lines ->
+        openFileInput(savedFilename).bufferedReader().useLines { lines ->
             try {
                 for (line in lines) {
-                    savedQRCodes.add(line);
+                    val matchNum = line.split(",").find { it.startsWith("mn=") }?.split("=")
+                    if (matchNum != null) {
+                        if(matchNum.size > 1 && matchNum[1] != "-1")
+                            savedQRCodes.add(line)
+                    };
                 }
             } catch (e: NoSuchElementException) {}
         }
@@ -89,14 +104,6 @@ class ScoutingActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: NoSuchElementException) {}
-        }
-
-        val filenameSaved = "storageFileCompleted"
-
-        if(File(filesDir, filenameSaved).exists()) {
-            openFileInput(filename).bufferedReader().useLines { lines ->
-                lines.forEach { line -> savedQRCodes.add(line) }
-            }
         }
 
         return adapterData
@@ -171,7 +178,7 @@ class ScoutingActivity : AppCompatActivity() {
 
                 val intent = Intent(this, QRCodeActivity::class.java)
                 intent.putStringArrayListExtra("data", savedQRCodes as ArrayList<String>)
-                startActivity(intent)
+                resultLauncher.launch(intent)
             }
         }
 
@@ -179,7 +186,7 @@ class ScoutingActivity : AppCompatActivity() {
         viewBtn.setOnClickListener {
             val intent = Intent(this, QRCodeActivity::class.java)
             intent.putStringArrayListExtra("data", savedQRCodes as ArrayList<String>)
-            startActivity(intent)
+            resultLauncher.launch(intent)
         }
     }
 

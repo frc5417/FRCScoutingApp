@@ -181,6 +181,8 @@ class QRCodeActivity : AppCompatActivity() {
                     applicationContext,
                     "Deleted that one!", Toast.LENGTH_SHORT
                 ).show()
+
+                if(qrCodeData.size == 0) finish()
             }
 
             builder.setPositiveButton("All") { _, _ ->

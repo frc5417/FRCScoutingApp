@@ -316,8 +316,9 @@ class ScoutingActivity : AppCompatActivity() {
         DataModel.Number(
             id = "cyc",
             title = "Estimated Cycle Time (s):",
-            value = 0f,
-            step = 0.5f
+            value = -0.5f,
+            step = 0.5f,
+            min = -1
         ),
 
         DataModel.Slider(

@@ -30,6 +30,10 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
             num.text = item.value.toString()
         }
 
+        if(item.value < 0f){
+            num.text = "None"
+        }
+
         var downBtn : Button = itemView.findViewById(R.id.btnDown)
         downBtn.setOnClickListener {
             if(item.value - item.step >= item.min) {
@@ -39,6 +43,10 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
                     num.text = item.value.toInt().toString()
                 } else {
                     num.text = item.value.toString()
+                }
+
+                if(item.value < 0f){
+                    num.text = "None"
                 }
 
                 adapter.saveUnsavedData();
@@ -54,6 +62,10 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
                     num.text = item.value.toInt().toString()
                 } else {
                     num.text = item.value.toString()
+                }
+
+                if(item.value < 0f){
+                    num.text = "None"
                 }
 
                 adapter.saveUnsavedData()

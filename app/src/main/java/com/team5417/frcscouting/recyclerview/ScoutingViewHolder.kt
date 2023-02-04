@@ -2,7 +2,9 @@ package com.recyclerviewapp
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
+import android.view.View.OnKeyListener
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -152,6 +154,8 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
                 }
             }
         })
+
+
 
         var teamNumEdit : EditText = itemView.findViewById(R.id.teamNum)
         if(item.teamNum != -1) teamNumEdit.setText(item.teamNum.toString())

@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:windowSoftInputMode="stateHidden"
         android:theme="@style/Theme.FRCScouting">
         <activity android:name="com.team5417.frcscouting.MainActivity" android:exported="true">
             <intent-filter>

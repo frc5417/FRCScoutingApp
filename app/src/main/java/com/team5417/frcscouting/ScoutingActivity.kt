@@ -196,33 +196,105 @@ class ScoutingActivity : AppCompatActivity() {
             title = "Autonomous Period"
         ),
         DataModel.Checkbox(
-            id = "ta",
-            title = "Robot left TARMAC:",
+            id = "lc",
+            title = "Robot left Community:",
             value = false
         ),
         DataModel.Number(
-            id = "at",
-            title = "Top Cargo:",
+            id = "acb",
+            title = "Cube Bottom Scored:",
             value = 0
         ),
         DataModel.Number(
-            id = "ab",
-            title = "Bottom Cargo:",
+            id = "acm",
+            title = "Cube Middle Scored:",
             value = 0
         ),
+        DataModel.Number(
+            id = "act",
+            title = "Cube Top Scored:",
+            value = 0
+        ),
+        DataModel.Number(
+            id = "aob",
+            title = "Cone Bottom Scored:",
+            value = 0
+        ),
+        DataModel.Number(
+            id = "aom",
+            title = "Cone Middle Scored:",
+            value = 0
+        ),
+        DataModel.Number(
+            id = "aot",
+            title = "Cone Top Scored:",
+            value = 0
+        ),
+        DataModel.Checkbox(
+            id = "adc",
+            title = "Robot Docked:",
+            value = false
+        ),
+        DataModel.Checkbox(
+            id = "aeg",
+            title = "Robot Engaged:",
+            value = false
+        ),
+
         DataModel.Header(
             title = "TeleOP Period"
         ),
         DataModel.Number(
-            id = "tt",
-            title = "Top Cargo:",
+            id = "tcb",
+            title = "Cube Bottom Scored:",
             value = 0
         ),
         DataModel.Number(
-            id = "tb",
-            title = "Bottom Cargo:",
+            id = "tcm",
+            title = "Cube Middle Scored:",
             value = 0
         ),
+        DataModel.Number(
+            id = "tct",
+            title = "Cube Top Scored:",
+            value = 0
+        ),
+        DataModel.Number(
+            id = "tob",
+            title = "Cone Bottom Scored:",
+            value = 0
+        ),
+        DataModel.Number(
+            id = "tom",
+            title = "Cone Middle Scored:",
+            value = 0
+        ),
+        DataModel.Number(
+            id = "tot",
+            title = "Cone Top Scored:",
+            value = 0
+        ),
+        DataModel.Checkbox(
+            id = "tdc",
+            title = "Robot Docked:",
+            value = false
+        ),
+        DataModel.Checkbox(
+            id = "teg",
+            title = "Robot Engaged:",
+            value = false
+        ),
+        DataModel.Checkbox(
+            id = "tpk",
+            title = "Robot Parked in Community:",
+            value = false
+        ),
+        DataModel.Number(
+            id = "cyc",
+            title = "Estimated Cycle Time (s):",
+            value = 0
+        ),
+
         DataModel.Slider(
             id = "dc",
             title = "Driver Comp:",

@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -129,6 +130,29 @@ class ScoutingActivity : AppCompatActivity() {
         val backBtn : Button = findViewById(R.id.backBtn);
         backBtn.setOnClickListener {
             finish();
+        }
+
+        val clearBtn : Button = findViewById(R.id.clearBtn);
+        clearBtn.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setCancelable(true)
+            builder.setTitle("Clear Data")
+            builder.setMessage("Do you want to clear your current data?")
+
+            builder.setNeutralButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+
+            builder.setPositiveButton("Confirm") { dialog, _ ->
+                dataAdapter.setData(getData())
+
+                Toast.makeText(
+                    applicationContext,
+                    "Cleared Data!", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            builder.show();
         }
 
         val exportBtn : Button = findViewById(R.id.idBtnGenerateQR)

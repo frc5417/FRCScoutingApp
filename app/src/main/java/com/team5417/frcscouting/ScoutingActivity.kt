@@ -72,7 +72,7 @@ class ScoutingActivity : AppCompatActivity() {
                                 when (model) {
                                     is DataModel.Number -> {
                                         if (model.id == id) {
-                                            model.value = value.toInt()
+                                            model.value = value.toFloat()
                                         }
                                     }
                                     is DataModel.Checkbox -> {
@@ -203,32 +203,32 @@ class ScoutingActivity : AppCompatActivity() {
         DataModel.Number(
             id = "acb",
             title = "Cube Bottom Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "acm",
             title = "Cube Middle Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "act",
             title = "Cube Top Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "aob",
             title = "Cone Bottom Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "aom",
             title = "Cone Middle Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "aot",
             title = "Cone Top Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Checkbox(
             id = "adc",
@@ -247,32 +247,32 @@ class ScoutingActivity : AppCompatActivity() {
         DataModel.Number(
             id = "tcb",
             title = "Cube Bottom Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "tcm",
             title = "Cube Middle Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "tct",
             title = "Cube Top Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "tob",
             title = "Cone Bottom Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "tom",
             title = "Cone Middle Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Number(
             id = "tot",
             title = "Cone Top Scored:",
-            value = 0
+            value = 0f
         ),
         DataModel.Checkbox(
             id = "tdc",
@@ -292,7 +292,8 @@ class ScoutingActivity : AppCompatActivity() {
         DataModel.Number(
             id = "cyc",
             title = "Estimated Cycle Time (s):",
-            value = 0
+            value = 0f,
+            step = 0.5f
         ),
 
         DataModel.Slider(

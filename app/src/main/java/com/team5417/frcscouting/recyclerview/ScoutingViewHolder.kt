@@ -22,13 +22,23 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
         label.text = item.title
 
         var num : TextView = itemView.findViewById(R.id.number)
-        num.text = item.value.toString()
+        if(item.value == item.value.toInt().toFloat()) {
+            num.text = item.value.toInt().toString()
+        } else {
+            num.text = item.value.toString()
+        }
 
         var downBtn : Button = itemView.findViewById(R.id.btnDown)
         downBtn.setOnClickListener {
             if(item.value - item.step >= item.min) {
                 item.value -= item.step
-                num.text = item.value.toString()
+
+                if(item.value == item.value.toInt().toFloat()) {
+                    num.text = item.value.toInt().toString()
+                } else {
+                    num.text = item.value.toString()
+                }
+
                 adapter.saveUnsavedData();
             }
         }
@@ -37,7 +47,13 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
         upBtn.setOnClickListener {
             if(item.value + item.step <= item.max) {
                 item.value += item.step
-                num.text = item.value.toString()
+
+                if(item.value == item.value.toInt().toFloat()) {
+                    num.text = item.value.toInt().toString()
+                } else {
+                    num.text = item.value.toString()
+                }
+
                 adapter.saveUnsavedData()
             }
         }

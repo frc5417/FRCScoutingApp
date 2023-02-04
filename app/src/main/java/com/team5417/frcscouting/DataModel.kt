@@ -13,8 +13,8 @@ sealed class DataModel {
     data class Number(
         val id: String,
         val title: String,
-        var value: Int,
-        var step: Int = 1,
+        var value: Float,
+        var step: Float = 1.0f,
         var min: Int = 0,
         var max: Int = 999
     ) : DataModel()

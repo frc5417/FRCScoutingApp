@@ -11,13 +11,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        configureStartBtn()
+        configureBtns()
     }
 
-    private fun configureStartBtn() {
+    private fun configureBtns() {
         val startBtn : Button = findViewById(R.id.btnStart);
         startBtn.setOnClickListener {
             startActivity(Intent(this, ScoutingActivity::class.java))
+        }
+
+        var settingsBtn : Button = findViewById(R.id.btnSettings)
+        settingsBtn.setOnClickListener {
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
     }
 

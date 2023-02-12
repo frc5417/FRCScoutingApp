@@ -2,9 +2,7 @@ package com.recyclerviewapp
 
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.KeyEvent
 import android.view.View
-import android.view.View.OnKeyListener
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -14,6 +12,7 @@ import com.google.android.material.slider.Slider
 import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
+import com.team5417.frcscouting.threads.TBAGetTeams
 
 class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -200,6 +199,20 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
                 } catch (e: NumberFormatException) {
                     teamNumEdit.setText("")
                 }
+
+
+                val threadWithRunnable = Thread(TBAGetTeams(itemView))
+                threadWithRunnable.start()
+//                val url = URL("https://www.thebluealliance.com/api/v3/event/2022txcmp1/matches/simple?X-TBA-Auth-Key=nzYBfQhcSNgqqaZCZ0M387JCyTvkyfJmXNV2JxT5DnkhM57vCS2uaZE8TrY9O8io")
+//                teamNumEdit.setText(url.readText())
+            //                val connection = url.openConnection()
+//                BufferedReader(InputStreamReader(connection.getInputStream())).use { inp ->
+//                    var line: String?
+//                    while (inp.readLine().also { line = it } != null) {
+//                        teamNumEdit.setText(line)
+//                    }
+//                }
+
             }
         })
     }

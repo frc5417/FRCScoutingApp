@@ -161,6 +161,7 @@ class ScoutingActivity : AppCompatActivity() {
             var isMatchNum = false;
             var isTeamNum = false;
             var dataToSend = ""
+            var matchNumber = 0;
             for (model in models) {
                 val toAdd = when (model) {
                     is DataModel.Number -> model.id+"="+model.value.toString()
@@ -173,6 +174,7 @@ class ScoutingActivity : AppCompatActivity() {
                         if(model.teamNum == -1) break;
                         isTeamNum = true;
                         "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
+                        matchNumber = model.matchNum
                     }
                     else -> ""
                 }
@@ -214,8 +216,10 @@ class ScoutingActivity : AppCompatActivity() {
         }
     }
 
-    private fun getData(): List<DataModel> = listOf(
-        DataModel.MatchAndTeamNum(),
+    private fun getData(match: Int = -1): List<DataModel> = listOf(
+        DataModel.MatchAndTeamNum(
+            matchNum = match
+        ),
         DataModel.Header(
             title = "Autonomous Period"
         ),

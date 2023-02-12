@@ -200,19 +200,6 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
                     teamNumEdit.setText("")
                 }
 
-
-                val threadWithRunnable = Thread(TBAGetTeams(itemView))
-                threadWithRunnable.start()
-//                val url = URL("https://www.thebluealliance.com/api/v3/event/2022txcmp1/matches/simple?X-TBA-Auth-Key=nzYBfQhcSNgqqaZCZ0M387JCyTvkyfJmXNV2JxT5DnkhM57vCS2uaZE8TrY9O8io")
-//                teamNumEdit.setText(url.readText())
-            //                val connection = url.openConnection()
-//                BufferedReader(InputStreamReader(connection.getInputStream())).use { inp ->
-//                    var line: String?
-//                    while (inp.readLine().also { line = it } != null) {
-//                        teamNumEdit.setText(line)
-//                    }
-//                }
-
             }
         })
     }

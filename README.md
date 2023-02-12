@@ -2,7 +2,7 @@
 An Android app (written in kotlin) to help make scouting easier for all teams!
 
 ## Configurable
-This app is completely configurable for your team. Simply head to the getData() function in app/src/main/java/com/team5417/frcscouting/ScoutingActivity.kt.
+This app is completely configurable for your team. Simply head to the getData() function in [app/src/main/java/com/team5417/frcscouting/ScoutingActivity.kt](https://github.com/frc5417/FRCScoutingApp/blob/main/app/src/main/java/com/team5417/frcscouting/ScoutingActivity.kt).
 
 ### Requirements:
 * MatchAndTeamNum() must be included, preferably first.

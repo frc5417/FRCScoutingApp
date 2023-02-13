@@ -17,7 +17,7 @@ import java.io.FileOutputStream
 
 class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<ScoutingViewHolder>() {
 
-    private val context = activity
+    val context = activity
     private val adapterData = mutableListOf<DataModel>()
     private lateinit var scoutingViewHolder : ScoutingViewHolder;
 
@@ -79,7 +79,16 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
         notifyDataSetChanged()
     }
 
-    fun getDataToSave() : String {
+    fun setMatchNum(match: Int) {
+        for (model in adapterData) {
+            if (model is DataModel.MatchAndTeamNum) {
+                model.matchNum = match
+            }
+        }
+        notifyDataSetChanged()
+    }
+
+    private fun getDataToSave() : String {
         var dataToSave = ""
         for (model in adapterData) {
             val toAdd = when (model) {
@@ -92,8 +101,8 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
             }
 
             if(toAdd != "") {
-                if(dataToSave == "") dataToSave += toAdd
-                else dataToSave += ",$toAdd"
+                dataToSave += if(dataToSave == "") toAdd
+                else ",$toAdd"
             }
         }
 

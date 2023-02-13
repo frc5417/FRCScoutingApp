@@ -33,6 +33,7 @@ class QRCodeActivity : AppCompatActivity() {
     var width: Float = 0.0f
     private var qrCodeData: MutableList<String> = mutableListOf()
     private var currentIndex: Int = 0
+    private var oldMatchNum: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,9 +55,14 @@ class QRCodeActivity : AppCompatActivity() {
                 qrCodeData = it
                 if(qrCodeData.size > 0) genQRCode(qrCodeData[currentIndex], qrCurrent)
             }
+            extras.getInt("prevMatch")?.let {
+                oldMatchNum = it
+            }
         }
 
         if(qrCodeData.isNotEmpty()) {
+
+            println(qrCodeData)
 
             label.text = "QRCode - ${currentIndex + 1}/" + qrCodeData.size +  " | Match: " + qrCodeData[0].split(",").find { it.startsWith("mn=") }!!
                 .split("=")[1]+  " | Team: " + qrCodeData[0].split(",").find { it.startsWith("tn=") }!!
@@ -136,6 +142,7 @@ class QRCodeActivity : AppCompatActivity() {
         backBtn.setOnClickListener {
             val previousScreen = Intent(applicationContext, ScoutingActivity::class.java)
             previousScreen.putStringArrayListExtra("data", qrCodeData as ArrayList<String>)
+            previousScreen.putExtra("prevMatch", oldMatchNum)
             setResult(RESULT_OK, previousScreen)
             finish()
         }
@@ -194,6 +201,7 @@ class QRCodeActivity : AppCompatActivity() {
 
                 val previousScreen = Intent(applicationContext, ScoutingActivity::class.java)
                 previousScreen.putStringArrayListExtra("data", qrCodeData as ArrayList<String>)
+                previousScreen.putExtra("prevMatch", oldMatchNum)
                 setResult(RESULT_OK, previousScreen)
                 finish()
 
@@ -256,6 +264,7 @@ class QRCodeActivity : AppCompatActivity() {
     override fun onBackPressed() {
         val previousScreen = Intent(applicationContext, ScoutingActivity::class.java)
         previousScreen.putStringArrayListExtra("data", qrCodeData as ArrayList<String>)
+        previousScreen.putExtra("prevMatch", oldMatchNum)
         setResult(RESULT_OK, previousScreen)
 
         super.onBackPressed()

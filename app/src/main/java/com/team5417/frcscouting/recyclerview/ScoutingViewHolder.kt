@@ -14,9 +14,9 @@ import com.team5417.frcscouting.R
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
 import com.team5417.frcscouting.threads.TBAGetTeams
 
-class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.ViewHolder(itemView) {
+class ScoutingViewHolder(scoutingAdapter: ScoutingAdapter, itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    private val adapter : ScoutingAdapter = adter;
+    private val adapter : ScoutingAdapter = scoutingAdapter;
 
     private fun bindNumber(item: DataModel.Number) {
         var label : TextView = itemView.findViewById(R.id.label)
@@ -135,6 +135,7 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
         var matchNumEdit : EditText = itemView.findViewById(R.id.matchNum)
         if(item.matchNum != -1) matchNumEdit.setText(item.matchNum.toString())
         else matchNumEdit.setText("")
+
         matchNumEdit.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int,count: Int, after: Int) {}
@@ -202,6 +203,18 @@ class ScoutingViewHolder(adter: ScoutingAdapter, itemView: View) : RecyclerView.
 
             }
         })
+
+        matchNumEdit.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                if (matchNumEdit.text.isNotEmpty()) {
+                    var teamNum = adapter.context.getTeamNumFromMatch(matchNumEdit.text.toString().toInt())
+                    if( teamNum.isEmpty() ) return@setOnFocusChangeListener;
+                    teamNumEdit.setText(teamNum)
+                    item.teamNum = teamNum.toInt()
+                    adapter.saveUnsavedData()
+                }
+            }
+        }
     }
 
     private fun bindHeader(item: DataModel.Header) {

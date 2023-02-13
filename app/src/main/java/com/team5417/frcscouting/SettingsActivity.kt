@@ -17,6 +17,7 @@ class SettingsActivity : AppCompatActivity() {
     private val settingsFile = "settings"
     private val teamsFile = "teams"
 
+    private var autoIncMatches = true
     private var selectedTeam = "Red 1"
     private var findTeamsOn = false
 
@@ -34,6 +35,13 @@ class SettingsActivity : AppCompatActivity() {
         val backBtn : Button = findViewById(R.id.backBtn);
         backBtn.setOnClickListener {
             finish();
+        }
+
+        val autoIncCheck : CheckBox = findViewById(R.id.autoIncCheck)
+        autoIncCheck.isChecked = true
+        autoIncCheck.setOnClickListener {
+            autoIncMatches = autoIncCheck.isChecked
+            saveSettings()
         }
 
         val spinnerTeams = findViewById<Spinner>(R.id.spnrTeam)
@@ -92,6 +100,9 @@ class SettingsActivity : AppCompatActivity() {
                     } else if (line.startsWith("findTeamsOn=")) {
                         findTeamsOn = line.split("=")[1] == "true"
                         findTeamCheck.isChecked = findTeamsOn
+                    } else if (line.startsWith("autoIncMatches=")) {
+                        autoIncMatches = line.split("=")[1] == "true"
+                        autoIncCheck.isChecked = autoIncMatches
                     }
                 }
             } catch (e: NoSuchElementException) {}
@@ -102,6 +113,7 @@ class SettingsActivity : AppCompatActivity() {
         if(!filesDir.exists()) filesDir.mkdir()
 
         var settingsStr = "";
+        settingsStr += "autoIncMatches=$autoIncMatches\n"
         settingsStr += "selectedTeam=$selectedTeam\n"
         settingsStr += "findTeamsOn=$findTeamsOn\n"
 

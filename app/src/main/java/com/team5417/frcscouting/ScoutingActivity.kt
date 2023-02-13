@@ -24,12 +24,29 @@ class ScoutingActivity : AppCompatActivity() {
     private var savedQRCodes = mutableListOf<String>();
     private val filename = "storageFile"
     private val savedFilename = "savedStorageFile"
+    private val settingsFile = "settings"
+    private val teamsFile = "teams"
 
-    var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+    private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
             if (data != null) {
                 savedQRCodes = data.getStringArrayListExtra("data") as MutableList<String>
+                val match = data.getIntExtra("prevMatch", -1)
+                if (match != -1) {
+                    openFileInput(settingsFile).bufferedReader().useLines { lines ->
+                        try {
+                            for (line in lines) {
+                                if (line.startsWith("autoIncMatches=")) {
+                                    if (line.split("=")[1] == "true") {
+                                        dataAdapter.setMatchNum(match + 1)
+                                    }
+                                    break
+                                }
+                            }
+                        } catch (e: NoSuchElementException) {}
+                    }
+                }
             }
         }
     }
@@ -49,10 +66,64 @@ class ScoutingActivity : AppCompatActivity() {
                     if (matchNum != null) {
                         if(matchNum.size > 1 && matchNum[1] != "-1")
                             savedQRCodes.add(line)
-                    };
+                    }
                 }
             } catch (e: NoSuchElementException) {}
         }
+    }
+
+    fun getTeamNumFromMatch(match: Int): String {
+        if(!filesDir.exists()) filesDir.mkdir()
+        if(!File(filesDir, settingsFile).exists() || !File(filesDir, teamsFile).exists()) return ""
+
+        var gatherFromFile = false
+        var selectedTeam = "Red 1"
+        openFileInput(settingsFile).bufferedReader().useLines { lines ->
+            try {
+                for (line in lines) {
+                    if (line.startsWith("findTeamsOn=")) {
+                        gatherFromFile = line.split("=")[1] == "true"
+                    } else if (line.startsWith("selectedTeam=")) {
+                        selectedTeam = line.split("=")[1]
+                    }
+                }
+            } catch (e: NoSuchElementException) {}
+        }
+
+        if (!gatherFromFile) return ""
+
+        openFileInput(teamsFile).bufferedReader().useLines { lines ->
+            try {
+                for (line in lines) {
+                    val args = line.split(" ")
+                    if (args.size < 3) continue
+                    if (args[0].toInt() == match) {
+                        when (selectedTeam) {
+                            "Red 1" -> {
+                                return args[1].split(",")[0]
+                            }
+                            "Red 2" -> {
+                                return args[1].split(",")[1]
+                            }
+                            "Red 3" -> {
+                                return args[1].split(",")[2]
+                            }
+                            "Blue 1" -> {
+                                return args[2].split(",")[0]
+                            }
+                            "Blue 2" -> {
+                                return args[2].split(",")[1]
+                            }
+                            "Blue 3" -> {
+                                return args[2].split(",")[2]
+                            }
+                        }
+                    }
+                }
+            } catch (e: NoSuchElementException) {}
+        }
+
+        return ""
     }
 
     private fun getCachedValues() : List<DataModel> {
@@ -161,7 +232,7 @@ class ScoutingActivity : AppCompatActivity() {
             var isMatchNum = false;
             var isTeamNum = false;
             var dataToSend = ""
-            var matchNumber = 0;
+            var prevMatch = -1
             for (model in models) {
                 val toAdd = when (model) {
                     is DataModel.Number -> model.id+"="+model.value.toString()
@@ -169,12 +240,12 @@ class ScoutingActivity : AppCompatActivity() {
                     is DataModel.Text -> model.id+"="+model.value
                     is DataModel.Slider -> model.id+"="+model.value.toString()
                     is DataModel.MatchAndTeamNum -> {
-                        if(model.matchNum == -1) break;
-                        isMatchNum = true;
-                        if(model.teamNum == -1) break;
-                        isTeamNum = true;
+                        if(model.matchNum == -1) break
+                        isMatchNum = true
+                        if(model.teamNum == -1) break
+                        isTeamNum = true
+                        prevMatch = model.matchNum
                         "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
-                        matchNumber = model.matchNum
                     }
                     else -> ""
                 }
@@ -204,6 +275,7 @@ class ScoutingActivity : AppCompatActivity() {
 
                 val intent = Intent(this, QRCodeActivity::class.java)
                 intent.putStringArrayListExtra("data", savedQRCodes as ArrayList<String>)
+                intent.putExtra("prevMatch", prevMatch)
                 resultLauncher.launch(intent)
             }
         }

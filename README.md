@@ -22,3 +22,16 @@ Pairs with the https://github.com/frc5417/FRCScoutingAnalyzer desktop app to gat
 
 ## Data Transfer
 Since wireless communications are disallowed [(E301)](https://www.firstinspires.org/sites/default/files/uploads/frc/EventRulesManual.pdf), this app generates QR codes that hold the data the scouters gather. It stores the data in text, not as images to increase the number of rounds it can hold before impacting performance.
+
+## Features
+### Auto Gather Team # to Scout
+Will automatically set the team # once the match number has been set if the setting is enabled.
+
+Requires:
+
+* A Blue Alliance API Key [app/src/main/res/values/strings.xml](https://github.com/frc5417/FRCScoutingApp/blob/main/app/src/main/res/values/strings.xml)
+* One TIme Wifi Connection
+* Set Event & Team to Scout (e.g., Blue 1) in the Settings Menu
+
+### Auto Increment Match Number
+Will automatically incrememnt the match number after export.

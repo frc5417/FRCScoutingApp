@@ -14,10 +14,11 @@ import java.net.URL
 
 class TBAGetTeams(settings: SettingsActivity, eventCode: String): Runnable {
     private val settingsActivity = settings
+    private val eventCode = eventCode
 
     override fun run() {
         try {
-            val url = URL("https://www.thebluealliance.com/api/v3/event/2022txcmp1/matches/simple?X-TBA-Auth-Key=" + settingsActivity.resources.getString(R.string.API_KEY))
+            val url = URL("https://www.thebluealliance.com/api/v3/event/" + eventCode + "/matches/simple?X-TBA-Auth-Key=" + settingsActivity.resources.getString(R.string.API_KEY))
             val text = url.readText()
 
             var matchesList = mutableListOf<String>();
@@ -40,14 +41,24 @@ class TBAGetTeams(settings: SettingsActivity, eventCode: String): Runnable {
             val sortedMatches = matchesList.sortedBy{ it.split(" ")[0].toInt() }
 
             val handler = Handler(Looper.getMainLooper())
-            val runnable = Runnable {
-                settingsActivity.saveMatches(sortedMatches)
-                Toast.makeText(
-                    settingsActivity.applicationContext,
-                    "Gathered teams!", Toast.LENGTH_SHORT
-                ).show()
+            if(matchesList.isNotEmpty()) {
+                val runnable = Runnable {
+                    settingsActivity.saveMatches(sortedMatches)
+                    Toast.makeText(
+                        settingsActivity.applicationContext,
+                        "Gathered teams!", Toast.LENGTH_SHORT
+                    ).show()
+                }
+                handler.post(runnable)
+            }else{
+                val runnable = Runnable {
+                    Toast.makeText(
+                        settingsActivity.applicationContext,
+                        "There are no matches for the event!", Toast.LENGTH_SHORT
+                    ).show()
+                }
+                handler.post(runnable)
             }
-            handler.post(runnable)
 
 
         } catch (err : FileNotFoundException) {
@@ -56,6 +67,15 @@ class TBAGetTeams(settings: SettingsActivity, eventCode: String): Runnable {
                 Toast.makeText(
                     settingsActivity.applicationContext,
                     "Invalid API Key!", Toast.LENGTH_SHORT
+                ).show()
+            }
+            handler.post(runnable)
+        } catch (err : Exception) {
+            val handler = Handler(Looper.getMainLooper())
+            val runnable = Runnable {
+                Toast.makeText(
+                    settingsActivity.applicationContext,
+                    "No Internet Connection!", Toast.LENGTH_SHORT
                 ).show()
             }
             handler.post(runnable)

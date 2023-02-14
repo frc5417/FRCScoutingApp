@@ -4,12 +4,14 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.team5417.frcscouting.threads.TBAGetEvents
 import com.team5417.frcscouting.threads.TBAGetTeams
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -20,6 +22,8 @@ class SettingsActivity : AppCompatActivity() {
     private var autoIncMatches = true
     private var selectedTeam = "Red 1"
     private var findTeamsOn = false
+
+    private var eventNames = mapOf<String, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +65,29 @@ class SettingsActivity : AppCompatActivity() {
             }
         })
 
+        val clearBtn : Button = findViewById(R.id.clearMatchesBtn)
+        clearBtn.setOnClickListener {
+            val builder = AlertDialog.Builder(this)
+            builder.setCancelable(true)
+            builder.setTitle("Clear Saved Matches")
+            builder.setMessage("Do you want to clear the current saved matches?")
+
+            builder.setNeutralButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+
+            builder.setPositiveButton("Confirm") { dialog, _ ->
+                clearMatches()
+
+                Toast.makeText(
+                    applicationContext,
+                    "Cleared Match Data!", Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            builder.show();
+        }
+
         val findTeamCheck : CheckBox = findViewById(R.id.findTeamCheck)
         findTeamCheck.setOnClickListener {
             findTeamsOn = findTeamCheck.isChecked
@@ -75,15 +102,18 @@ class SettingsActivity : AppCompatActivity() {
             ).show()
 
             val spinnerEvents = findViewById<Spinner>(R.id.spnrEvent)
-            val selected = if (spinnerEvents.selectedItem == null) "" else spinnerEvents.selectedItem.toString()
-            if (selected == null || selected.isEmpty()) {
+            val name = if (spinnerEvents.selectedItem == null) "" else spinnerEvents.selectedItem.toString()
+            if (name == null || name.isEmpty()) {
                 Toast.makeText(
                     applicationContext,
                     "Invalid Event Selected!", Toast.LENGTH_SHORT
                 ).show()
             } else {
-                val threadWithRunnable = Thread(TBAGetTeams(this, selected))
-                threadWithRunnable.start()
+                val selected = this.eventNames[name]
+                if (selected != null){
+                    val threadWithRunnable = Thread(TBAGetTeams(this, selected))
+                    threadWithRunnable.start()
+                }
             }
         }
 
@@ -122,12 +152,14 @@ class SettingsActivity : AppCompatActivity() {
         fosSaved.close()
     }
 
-    fun addEventMenu(events: List<String>) {
+    fun addEventMenu(events: Map<String, String>) {
         val spinnerEvents = findViewById<Spinner>(R.id.spnrEvent)
 
-        val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, events)
+        val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, events.keys.toList())
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         spinnerEvents.adapter = adapter
+
+        this.eventNames = events
     }
 
     fun saveMatches(matches: List<String>) {
@@ -135,6 +167,14 @@ class SettingsActivity : AppCompatActivity() {
 
         val fosSaved: FileOutputStream = openFileOutput(teamsFile, Context.MODE_PRIVATE)
         fosSaved.write(matches.joinToString("\n").toByteArray())
+        fosSaved.close()
+    }
+
+    fun clearMatches() {
+        if(!filesDir.exists()) filesDir.mkdir()
+
+        val fosSaved: FileOutputStream = openFileOutput(teamsFile, Context.MODE_PRIVATE)
+        fosSaved.write("".toByteArray())
         fosSaved.close()
     }
 

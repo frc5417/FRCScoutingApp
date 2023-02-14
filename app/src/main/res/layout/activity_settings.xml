@@ -169,10 +169,40 @@
         app:icon="@android:drawable/ic_menu_upload"
         app:iconPadding="10dp"
         android:layout_marginRight="35dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         android:scaleX="1.5"
         android:scaleY="1.5"
         app:layout_constraintTop_toBottomOf="@+id/spnrEvent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/clearMatchesTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/twcenmtstd"
+        android:padding="5dp"
+        android:text="Clear Matches"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@+id/fetchTextView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/clearMatchesBtn"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
+        app:icon="@android:drawable/ic_menu_delete"
+        app:iconPadding="10dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="20dp"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        app:layout_constraintTop_toBottomOf="@+id/fetchBtn"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -52,6 +52,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:thumbColor="@color/white"
         app:trackColorActive="@color/black"
-        app:trackColor="@color/gray" />
+        app:trackColor="@color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

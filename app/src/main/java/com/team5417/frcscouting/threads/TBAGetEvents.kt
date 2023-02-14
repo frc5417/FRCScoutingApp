@@ -17,7 +17,7 @@ class TBAGetEvents(settings: SettingsActivity): Runnable {
 
     override fun run() {
         val year = Calendar.getInstance().get(Calendar.YEAR)
-        val url = URL("https://www.thebluealliance.com/api/v3/events/" + "2022" + "?X-TBA-Auth-Key=" + settingsActivity.resources.getString(R.string.API_KEY))
+        val url = URL("https://www.thebluealliance.com/api/v3/events/" + year + "?X-TBA-Auth-Key=" + settingsActivity.resources.getString(R.string.API_KEY))
         try {
             val text = url.readText()
             var comingUpEvents = mutableMapOf<String, String>()
@@ -29,8 +29,8 @@ class TBAGetEvents(settings: SettingsActivity): Runnable {
                 val name = event["name"].toString()
                 val code = event["key"].toString()
 
-                //val currentDate = System.currentTimeMillis() / 1000 //actually gets the current date
-                val currentDate = SimpleDateFormat("yyyy-MM-dd").parse("2022-03-01").time / 1000 //use this to change the current date
+                val currentDate = System.currentTimeMillis() / 1000 //actually gets the current date
+                //val currentDate = SimpleDateFormat("yyyy-MM-dd").parse("2022-03-01").time / 1000 //use this to change the current date
                 val endDateTime = (SimpleDateFormat("yyyy-MM-dd").parse(endDateStr).time / 1000) + 86400 //get unix time for event end, add 1 day
 
                 if(currentDate <= endDateTime && endDateTime - currentDate <= 432000) { //make current date before and make sure event is within 5 days

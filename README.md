@@ -45,4 +45,4 @@ Requires:
 * Set Event & Team to Scout (e.g., Blue 1) in the Settings Menu
 
 ### Auto Increment Match Number
-Will automatically incrememnt the match number after export.
+Will automatically increment the match number after export.

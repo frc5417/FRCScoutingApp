@@ -20,6 +20,17 @@ Note: In the future, we hope to make configuring not require compiling like our 
 ## Data Analyzer
 Pairs with the https://github.com/frc5417/FRCScoutingAnalyzer desktop app to gather data in a centralized place and easily analyze it.
 
+## How to Install
+1. Download the latest apk from releases (or generate your own - see below) onto an Android phone.
+2. Open the apk file (might have to enable developer settings).
+3. Click "Install" when prompted.
+4. Run the app!
+
+## How to Build
+1. Clone the repository
+2. Open in Android Studio 2022
+3. Build tab -> Generate APK(s)
+
 ## Data Transfer
 Since wireless communications are disallowed [(E301)](https://www.firstinspires.org/sites/default/files/uploads/frc/EventRulesManual.pdf), this app generates QR codes that hold the data the scouters gather. It stores the data in text, not as images to increase the number of rounds it can hold before impacting performance.
 
@@ -34,4 +45,4 @@ Requires:
 * Set Event & Team to Scout (e.g., Blue 1) in the Settings Menu
 
 ### Auto Increment Match Number
-Will automatically incrememnt the match number after export.
+Will automatically increment the match number after export.

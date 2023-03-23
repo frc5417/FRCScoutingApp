@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -193,8 +194,24 @@ class ScoutingActivity : AppCompatActivity() {
                 hasFixedSize()
                 this.adapter = dataAdapter
             }
-
         configureBtns()
+
+        var selectedTeam = "Red 1"
+        // gather settings
+        if(!filesDir.exists()) filesDir.mkdir()
+        if(!File(filesDir, settingsFile).exists()) return
+        openFileInput(settingsFile).bufferedReader().useLines { lines ->
+            try {
+                for (line in lines) {
+                    if (line.startsWith("selectedTeam=")) {
+                        selectedTeam = line.split("=")[1]
+                    }
+                }
+            } catch (e: NoSuchElementException) {}
+        }
+
+        val teamText : TextView = findViewById(R.id.team)
+        teamText.text = selectedTeam
     }
 
     private fun configureBtns() {

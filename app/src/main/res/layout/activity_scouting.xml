@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="4dp"
         android:background="#40000000"
         android:fontFamily="@font/twcenmtstd"
         android:padding="5dp"
@@ -20,6 +20,21 @@
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/team"
+        android:layout_width="75dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="44dp"
+        android:fontFamily="@font/twcenmtstd"
+        android:padding="5dp"
+        android:text="Red 1"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

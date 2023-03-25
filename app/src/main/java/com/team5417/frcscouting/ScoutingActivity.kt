@@ -155,7 +155,7 @@ class ScoutingActivity : AppCompatActivity() {
                                     }
                                     is DataModel.Text -> {
                                         if (model.id == id) {
-                                            model.value = value
+                                            model.value = value.replace("|||", "\n")
                                         }
                                     }
                                     is DataModel.Slider -> {
@@ -254,7 +254,7 @@ class ScoutingActivity : AppCompatActivity() {
                 val toAdd = when (model) {
                     is DataModel.Number -> model.id+"="+model.value.toString()
                     is DataModel.Checkbox -> model.id+"="+if (model.value) "1" else "0"
-                    is DataModel.Text -> model.id+"="+model.value
+                    is DataModel.Text -> model.id+"="+model.value.replace("\n", "|||").replace(",", ";")
                     is DataModel.Slider -> model.id+"="+model.value.toString()
                     is DataModel.MatchAndTeamNum -> {
                         if(model.matchNum == -1) break

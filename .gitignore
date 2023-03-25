@@ -13,4 +13,4 @@
 .externalNativeBuild
 .cxx
 local.properties
-*/strings.xml
+app/src/main/res/values/strings.xml

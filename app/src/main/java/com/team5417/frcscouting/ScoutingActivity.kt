@@ -135,7 +135,7 @@ class ScoutingActivity : AppCompatActivity() {
 
         openFileInput(filename).bufferedReader().useLines { lines ->
             try {
-                val line = lines.first();
+                val line = lines.first()
                 if(line != "") {
                     line.split(",").forEach { csv ->
                         if (csv.contains('=')) {

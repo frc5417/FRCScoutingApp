@@ -19,8 +19,10 @@ import androidmads.library.qrgenearator.QRGEncoder
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.team5417.frcscouting.listeners.OnSwipeTouchListener
+import java.io.File
 import java.io.FileOutputStream
 import java.util.ArrayList
+import java.util.NoSuchElementException
 
 
 class QRCodeActivity : AppCompatActivity() {
@@ -34,6 +36,8 @@ class QRCodeActivity : AppCompatActivity() {
     private var qrCodeData: MutableList<String> = mutableListOf()
     private var currentIndex: Int = 0
     private var oldMatchNum: Int = -1
+
+    private val settingsFile = "settings"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,6 +139,23 @@ class QRCodeActivity : AppCompatActivity() {
         }
 
         configureBtns()
+
+        var selectedTeam = "Red 1"
+        // gather settings
+        if(!filesDir.exists()) filesDir.mkdir()
+        if(!File(filesDir, settingsFile).exists()) return
+        openFileInput(settingsFile).bufferedReader().useLines { lines ->
+            try {
+                for (line in lines) {
+                    if (line.startsWith("selectedTeam=")) {
+                        selectedTeam = line.split("=")[1]
+                    }
+                }
+            } catch (e: NoSuchElementException) {}
+        }
+
+        val teamText : TextView = findViewById(R.id.team)
+        teamText.text = selectedTeam
     }
 
     private fun configureBtns() {

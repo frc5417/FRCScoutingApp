@@ -13,6 +13,7 @@ import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
 import com.team5417.frcscouting.ScoutingActivity
 import java.io.FileOutputStream
+import java.util.NoSuchElementException
 
 
 class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<ScoutingViewHolder>() {

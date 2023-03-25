@@ -35,6 +35,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/team"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="25dp"
+            android:fontFamily="@font/twcenmtstd"
+            android:padding="5dp"
+            android:text="Red 1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="23sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/label" />
+
         <Button
             android:id="@+id/backBtnQRCode"
             style="@style/Widget.MaterialComponents.Button.Icon"

@@ -12,7 +12,6 @@ import com.google.android.material.slider.Slider
 import com.team5417.frcscouting.DataModel
 import com.team5417.frcscouting.R
 import com.team5417.frcscouting.recyclerview.ScoutingAdapter
-import com.team5417.frcscouting.threads.TBAGetTeams
 
 class ScoutingViewHolder(scoutingAdapter: ScoutingAdapter, itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -105,8 +104,8 @@ class ScoutingViewHolder(scoutingAdapter: ScoutingAdapter, itemView: View) : Rec
 
         var checkBox: CheckBox = itemView.findViewById(R.id.checkbox)
         checkBox.isChecked = item.value
-        checkBox.setOnCheckedChangeListener { _, b ->
-            item.value = b
+        checkBox.setOnClickListener { v ->
+            item.value = (v as CheckBox).isChecked
             adapter.saveUnsavedData()
         }
     }

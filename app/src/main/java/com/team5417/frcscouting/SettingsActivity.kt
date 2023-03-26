@@ -1,6 +1,7 @@
 package com.team5417.frcscouting
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.*
@@ -58,6 +59,8 @@ class SettingsActivity : AppCompatActivity() {
             override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
                 selectedTeam = spinnerTeams.selectedItem.toString()
                 saveSettings()
+
+                (spinnerTeams.getChildAt(0) as TextView).setTextColor(Color.WHITE)
             }
 
             override fun onNothingSelected(adapterView: AdapterView<*>?) {
@@ -158,6 +161,20 @@ class SettingsActivity : AppCompatActivity() {
         val adapter = ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, events.keys.toList())
         adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         spinnerEvents.adapter = adapter
+
+        spinnerEvents.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+                try {
+                    (spinnerEvents.getChildAt(0) as TextView).setTextColor(Color.WHITE)
+                }catch(e: Exception){
+                    println(e.message)
+                }
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                return
+            }
+        })
 
         this.eventNames = events
     }

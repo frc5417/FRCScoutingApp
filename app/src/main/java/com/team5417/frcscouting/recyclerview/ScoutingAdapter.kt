@@ -33,6 +33,7 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
             TYPE_CHECKBOX -> R.layout.checkbox
             TYPE_TEXT -> R.layout.text
             TYPE_HEADER -> R.layout.header
+            TYPE_DROPDOWN -> R.layout.dropdown
             TYPE_MATCH_AND_TEAM_NUM -> R.layout.match_and_team_numbers
             else -> throw IllegalArgumentException("Invalid type")
         }
@@ -62,6 +63,7 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
             is DataModel.Slider -> TYPE_SLIDER
             is DataModel.Checkbox -> TYPE_CHECKBOX
             is DataModel.Text -> TYPE_TEXT
+            is DataModel.DropDown -> TYPE_DROPDOWN
             is DataModel.MatchAndTeamNum -> TYPE_MATCH_AND_TEAM_NUM
             else -> TYPE_HEADER
         }
@@ -97,6 +99,7 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
                 is DataModel.Checkbox -> model.id+"="+if (model.value) "1" else "0"
                 is DataModel.Text -> model.id+"="+model.value.replace("\n", "|||").replace(",", ";")
                 is DataModel.Slider -> model.id+"="+model.value.toString()
+                is DataModel.DropDown -> model.id+"="+model.index.toString()
                 is DataModel.MatchAndTeamNum -> "mn="+model.matchNum.toString()+",tn="+model.teamNum.toString()
                 else -> ""
             }
@@ -135,5 +138,6 @@ class ScoutingAdapter(activity: ScoutingActivity) : RecyclerView.Adapter<Scoutin
         private const val TYPE_TEXT = 3
         private const val TYPE_HEADER = 4
         private const val TYPE_MATCH_AND_TEAM_NUM = 5
+        private const val TYPE_DROPDOWN = 6
     }
 }

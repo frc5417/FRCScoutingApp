@@ -1,11 +1,17 @@
 package com.recyclerviewapp
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.slider.Slider
@@ -108,6 +114,30 @@ class ScoutingViewHolder(scoutingAdapter: ScoutingAdapter, itemView: View) : Rec
             item.value = (v as CheckBox).isChecked
             adapter.saveUnsavedData()
         }
+    }
+
+    private fun bindDropdown(item: DataModel.DropDown) {
+        var label : TextView = itemView.findViewById(R.id.label)
+        label.text = item.title
+
+        var dropdown: Spinner = itemView.findViewById(R.id.spinner)
+        val spinnerAdapter = ArrayAdapter(adapter.context, R.layout.support_simple_spinner_dropdown_item, item.options.toList())
+        spinnerAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+        dropdown.adapter = spinnerAdapter
+        dropdown.setSelection(item.index)
+
+        dropdown.onItemSelectedListener = (object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(adapterView: AdapterView<*>?, view: View, i: Int, l: Long) {
+                item.index = i //i is the position selected
+                adapter.saveUnsavedData()
+
+                (dropdown.getChildAt(0) as TextView).setTextColor(Color.WHITE)
+            }
+
+            override fun onNothingSelected(adapterView: AdapterView<*>?) {
+                return
+            }
+        })
     }
 
     private fun bindText(item: DataModel.Text) {
@@ -228,6 +258,7 @@ class ScoutingViewHolder(scoutingAdapter: ScoutingAdapter, itemView: View) : Rec
             is DataModel.Checkbox -> bindCheckbox(dataModel)
             is DataModel.Text -> bindText(dataModel)
             is DataModel.Header -> bindHeader(dataModel)
+            is DataModel.DropDown -> bindDropdown(dataModel)
             is DataModel.MatchAndTeamNum -> bindMatchAndTeamNum(dataModel)
         }
     }

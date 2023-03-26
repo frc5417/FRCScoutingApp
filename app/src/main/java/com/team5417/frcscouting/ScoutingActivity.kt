@@ -163,6 +163,11 @@ class ScoutingActivity : AppCompatActivity() {
                                             model.value = value.toFloat()
                                         }
                                     }
+                                    is DataModel.DropDown -> {
+                                        if (model.id == id) {
+                                            model.index = value.toInt()
+                                        }
+                                    }
                                     is DataModel.MatchAndTeamNum -> {
                                         if (id == "mn") {
                                             model.matchNum = value.toInt()
@@ -256,6 +261,7 @@ class ScoutingActivity : AppCompatActivity() {
                     is DataModel.Checkbox -> model.id+"="+if (model.value) "1" else "0"
                     is DataModel.Text -> model.id+"="+model.value.replace("\n", "|||").replace(",", ";")
                     is DataModel.Slider -> model.id+"="+model.value.toString()
+                    is DataModel.DropDown -> model.id+"="+model.index.toString()
                     is DataModel.MatchAndTeamNum -> {
                         if(model.matchNum == -1) break
                         isMatchNum = true
@@ -347,15 +353,10 @@ class ScoutingActivity : AppCompatActivity() {
             title = "Cone Top Scored:",
             value = 0f
         ),
-        DataModel.Checkbox(
-            id = "adc",
-            title = "Robot Docked:",
-            value = false
-        ),
-        DataModel.Checkbox(
-            id = "aeg",
-            title = "Robot Engaged:",
-            value = false
+        DataModel.DropDown(
+            id = "acs",
+            title = "Charge Station",
+            options = mutableListOf("None", "Docked", "Docked & Engaged")
         ),
 
         DataModel.Header(
@@ -391,27 +392,15 @@ class ScoutingActivity : AppCompatActivity() {
             title = "Cone Top Scored:",
             value = 0f
         ),
-        DataModel.Checkbox(
-            id = "tdc",
-            title = "Robot Docked:",
-            value = false
-        ),
-        DataModel.Checkbox(
-            id = "teg",
-            title = "Robot Engaged:",
-            value = false
+        DataModel.DropDown(
+            id = "tcs",
+            title = "Charge Station",
+            options = mutableListOf("None", "Docked", "Docked & Engaged")
         ),
         DataModel.Checkbox(
             id = "tpk",
             title = "Robot Parked in Community:",
             value = false
-        ),
-        DataModel.Number(
-            id = "cyc",
-            title = "Estimated Cycle Time (s):",
-            value = -0.5f,
-            step = 0.5f,
-            min = -1
         ),
 
         DataModel.Slider(

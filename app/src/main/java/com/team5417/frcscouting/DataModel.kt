@@ -36,4 +36,10 @@ sealed class DataModel {
         val title: String,
         var value: String
     ) : DataModel()
+    data class DropDown(
+        val id: String,
+        val title: String,
+        var index: Int = 0,
+        val options: MutableList<String>
+    ) : DataModel()
 }

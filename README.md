@@ -1,5 +1,5 @@
 # FRCScoutingApp
-An Android app (written in kotlin) to help make scouting easier for all teams!
+An Android app (written in Kotlin) to help make scouting easier for all teams!
 
 ## Configurable
 This app is completely configurable for your team. Simply head to the getData() function in [app/src/main/java/com/team5417/frcscouting/ScoutingActivity.kt](https://github.com/frc5417/FRCScoutingApp/blob/main/app/src/main/java/com/team5417/frcscouting/ScoutingActivity.kt).
@@ -13,6 +13,7 @@ This app is completely configurable for your team. Simply head to the getData() 
 * Number - A number with a label. Can be changed with buttons or with text entry. Has optional starting value, min, max, and step variables.
 * Slider - Slider with configurable min, max, step, and starting values.
 * Checkbox - Boolean value with optional starting value.
+* Dropdown - A dropdown with a list of options. Stores the index of the selected item.
 * Text - Text box with optional starting value.
 
 Note: In the future, we hope to make configuring not require compiling like our Data Analyzer.
@@ -41,7 +42,7 @@ Will automatically set the team # once the match number has been set if the sett
 Requires:
 
 * A Blue Alliance API Key [app/src/main/res/values/strings.xml](https://github.com/frc5417/FRCScoutingApp/blob/main/app/src/main/res/values/strings.xml)
-* One TIme Wifi Connection
+* One Time Wifi Connection
 * Set Event & Team to Scout (e.g., Blue 1) in the Settings Menu
 
 ### Auto Increment Match Number

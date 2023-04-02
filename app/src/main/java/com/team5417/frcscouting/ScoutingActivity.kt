@@ -356,7 +356,7 @@ class ScoutingActivity : AppCompatActivity() {
         DataModel.DropDown(
             id = "acs",
             title = "Charge Station",
-            options = mutableListOf("None", "Docked", "Docked & Engaged")
+            options = mutableListOf("None", "Docked", "Docked & Engaged", "Rolled Off")
         ),
 
         DataModel.Header(
@@ -395,7 +395,7 @@ class ScoutingActivity : AppCompatActivity() {
         DataModel.DropDown(
             id = "tcs",
             title = "Charge Station",
-            options = mutableListOf("None", "Docked", "Docked & Engaged")
+            options = mutableListOf("None", "Docked", "Docked & Engaged", "Rolled Off")
         ),
         DataModel.Checkbox(
             id = "tpk",

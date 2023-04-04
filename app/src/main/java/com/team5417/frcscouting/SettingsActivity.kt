@@ -3,6 +3,8 @@ package com.team5417.frcscouting
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -12,7 +14,6 @@ import com.team5417.frcscouting.threads.TBAGetTeams
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class SettingsActivity : AppCompatActivity() {
@@ -23,6 +24,7 @@ class SettingsActivity : AppCompatActivity() {
     private var autoIncMatches = true
     private var selectedTeam = "Red 1"
     private var findTeamsOn = false
+    private var scouterName = ""
 
     private var eventNames = mapOf<String, String>()
 
@@ -48,6 +50,18 @@ class SettingsActivity : AppCompatActivity() {
             autoIncMatches = autoIncCheck.isChecked
             saveSettings()
         }
+
+        val name : EditText = findViewById(R.id.scouterName)
+        name.setTextColor(Color.WHITE)
+        name.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                scouterName = name.text.toString()
+                saveSettings()
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        })
 
         val spinnerTeams = findViewById<Spinner>(R.id.spnrTeam)
 
@@ -136,6 +150,9 @@ class SettingsActivity : AppCompatActivity() {
                     } else if (line.startsWith("autoIncMatches=")) {
                         autoIncMatches = line.split("=")[1] == "true"
                         autoIncCheck.isChecked = autoIncMatches
+                    } else if (line.startsWith("scouterName=")) {
+                        scouterName = line.split("=")[1]
+                        name.setText(scouterName)
                     }
                 }
             } catch (e: NoSuchElementException) {}
@@ -149,6 +166,7 @@ class SettingsActivity : AppCompatActivity() {
         settingsStr += "autoIncMatches=$autoIncMatches\n"
         settingsStr += "selectedTeam=$selectedTeam\n"
         settingsStr += "findTeamsOn=$findTeamsOn\n"
+        settingsStr += "scouterName=$scouterName\n"
 
         val fosSaved: FileOutputStream = openFileOutput(settingsFile, Context.MODE_PRIVATE)
         fosSaved.write(settingsStr.toByteArray())

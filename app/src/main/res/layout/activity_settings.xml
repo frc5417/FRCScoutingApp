@@ -206,4 +206,34 @@
         app:layout_constraintTop_toBottomOf="@+id/fetchBtn"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/twcenmtstd"
+        android:padding="5dp"
+        android:text="Scouter Name"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        app:layout_constraintTop_toBottomOf="@+id/clearMatchesTextView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/scouterName"
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="35dp"
+        android:layout_marginTop="12dp"
+        android:textColor="@color/white"
+        android:hint="Name"
+        android:inputType="textNoSuggestions"
+        android:imeOptions="actionDone"
+        android:textSize="20sp"
+        android:textAlignment="textEnd"
+        app:layout_constraintTop_toBottomOf="@id/clearMatchesBtn"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

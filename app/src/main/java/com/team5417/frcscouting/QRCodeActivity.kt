@@ -141,6 +141,7 @@ class QRCodeActivity : AppCompatActivity() {
         configureBtns()
 
         var selectedTeam = "Red 1"
+        var name = ""
         // gather settings
         if(!filesDir.exists()) filesDir.mkdir()
         if(!File(filesDir, settingsFile).exists()) return
@@ -149,9 +150,15 @@ class QRCodeActivity : AppCompatActivity() {
                 for (line in lines) {
                     if (line.startsWith("selectedTeam=")) {
                         selectedTeam = line.split("=")[1]
+                    } else if (line.startsWith("scouterName=")) {
+                        name = line.split("=")[1]
                     }
                 }
             } catch (e: NoSuchElementException) {}
+        }
+
+        if (name != "") {
+            selectedTeam += " - $name"
         }
 
         val teamText : TextView = findViewById(R.id.team)

@@ -49,4 +49,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStart" />
 
+    <EditText
+        android:id="@+id/scouterName"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:textColor="@color/white"
+        android:hint="Scouter Name"
+        android:inputType="textNoSuggestions"
+        android:imeOptions="actionDone"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@id/btnSettings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,11 +38,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, SettingsActivity::class.java))
         }
 
-        val name : EditText = findViewById(R.id.scouterName)
+        val name : EditText = findViewById(R.id.scouterNameMain)
         name.setTextColor(Color.WHITE)
         name.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 scouterName = name.text.toString()
+                name.setTextColor(Color.WHITE)
                 saveName()
             }
 
@@ -81,6 +82,10 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             } catch (e: NoSuchElementException) {}
+        }
+
+        if(!settingsStr.contains("scouterName=")){
+            settingsStr += "scouterName=$scouterName"
         }
 
         val fosSaved: FileOutputStream = openFileOutput(settingsFile, Context.MODE_PRIVATE)

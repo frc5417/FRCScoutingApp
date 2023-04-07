@@ -56,6 +56,7 @@ class SettingsActivity : AppCompatActivity() {
         name.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 scouterName = name.text.toString()
+                name.setTextColor(Color.WHITE)
                 saveSettings()
             }
 

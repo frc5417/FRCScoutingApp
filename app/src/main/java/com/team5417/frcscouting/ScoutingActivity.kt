@@ -327,87 +327,68 @@ class ScoutingActivity : AppCompatActivity() {
         ),
         DataModel.Checkbox(
             id = "lc",
-            title = "Robot left Community:",
+            title = "Robot Parked in Backstage:",
             value = false
         ),
-        DataModel.Number(
-            id = "acb",
-            title = "Cube Bottom Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "acm",
-            title = "Cube Middle Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "act",
-            title = "Cube Top Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "aob",
-            title = "Cone Bottom Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "aom",
-            title = "Cone Middle Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "aot",
-            title = "Cone Top Scored:",
-            value = 0f
+        DataModel.Checkbox(
+            id = "white_pixel",
+            title = "Robot Scored White Pixel on:",
+            value = false
         ),
         DataModel.DropDown(
-            id = "acs",
-            title = "Charge Station",
-            options = mutableListOf("None", "Docked", "Docked & Engaged", "Rolled Off")
+            id = "rand_tasks",
+            title = "Randomization Tasks",
+            options = mutableListOf("none", "White Pixel", "Team Prop")
         ),
-
+        DataModel.Number(
+            id = "aps",
+            title = "Pixels in Scoring Area:",
+            value = 0f
+        ),
+        DataModel.Number(
+            id = "apb",
+            title = "Pixels in Backstage:",
+            value = 0f
+        ),
         DataModel.Header(
             title = "TeleOP Period"
         ),
         DataModel.Number(
-            id = "tcb",
-            title = "Cube Bottom Scored:",
+            id = "tpb",
+            title = "Pixels in Backdrop:",
             value = 0f
         ),
         DataModel.Number(
-            id = "tcm",
-            title = "Cube Middle Scored:",
+            id = "tps",
+            title = "Pixels in Backstage",
             value = 0f
         ),
         DataModel.Number(
-            id = "tct",
-            title = "Cube Top Scored:",
+            id = "tpm",
+            title = "Mosaics Made:",
             value = 0f
         ),
-        DataModel.Number(
-            id = "tob",
-            title = "Cone Bottom Scored:",
-            value = 0f
+
+        DataModel.Header(
+            title = "Endgame Period"
         ),
-        DataModel.Number(
-            id = "tom",
-            title = "Cone Middle Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "tot",
-            title = "Cone Top Scored:",
-            value = 0f
-        ),
-        DataModel.DropDown(
-            id = "tcs",
-            title = "Charge Station",
-            options = mutableListOf("None", "Docked", "Docked & Engaged", "Rolled Off")
-        ),
+
         DataModel.Checkbox(
-            id = "tpk",
-            title = "Robot Parked in Community:",
+            id = "esr",
+            title = "Suspended from Rigging:",
             value = false
+        ),
+
+        DataModel.Checkbox(
+            id = "eps",
+            title = "Parked in the Backstage:",
+            value = false
+        ),
+
+        DataModel.DropDown(
+            id = "elz",
+            title = "Drone Launching Zone",
+            options = mutableListOf("none", "Landing Zone 1", "Landing Zone 2", "Landing Zone 3")
         ),
 
         DataModel.Slider(

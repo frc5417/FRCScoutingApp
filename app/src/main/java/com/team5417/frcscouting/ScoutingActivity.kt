@@ -330,11 +330,6 @@ class ScoutingActivity : AppCompatActivity() {
             title = "Robot Parked in Backstage:",
             value = false
         ),
-        DataModel.Checkbox(
-            id = "white_pixel",
-            title = "Robot Scored White Pixel on:",
-            value = false
-        ),
         DataModel.DropDown(
             id = "rand_tasks",
             title = "Randomization Tasks",
@@ -342,7 +337,7 @@ class ScoutingActivity : AppCompatActivity() {
         ),
         DataModel.Number(
             id = "aps",
-            title = "Pixels in Scoring Area:",
+            title = "Pixels in Backdrop:",
             value = 0f
         ),
         DataModel.Number(
@@ -368,7 +363,11 @@ class ScoutingActivity : AppCompatActivity() {
             title = "Mosaics Made:",
             value = 0f
         ),
-
+        DataModel.Number(
+            id = "tsb",
+            title = "Set Bonus",
+            value = 0f
+        ),
         DataModel.Header(
             title = "Endgame Period"
         ),
@@ -389,20 +388,6 @@ class ScoutingActivity : AppCompatActivity() {
             id = "elz",
             title = "Drone Launching Zone",
             options = mutableListOf("none", "Landing Zone 1", "Landing Zone 2", "Landing Zone 3")
-        ),
-
-        DataModel.Slider(
-            id = "dc",
-            title = "Driver Comp:",
-            value = 0.0f,
-            max = 5.0f
-        ),
-        DataModel.Slider(
-            id = "df",
-            title = "Defensive",
-            max = 5.0f,
-            min = -1.0f,
-            value = -1.0f
         ),
         DataModel.Text(
             id = "n",

@@ -219,8 +219,8 @@ class ScoutingViewHolder(scoutingAdapter: ScoutingAdapter, itemView: View) : Rec
                     teamNumEdit.setSelection(teamNumEdit.length())
                 }
 
-                if(teamNumEdit.text.toString().length > 4) {
-                    teamNumEdit.setText(teamNumEdit.text.toString().substring(0, 4))
+                if(teamNumEdit.text.toString().length > 5) {
+                    teamNumEdit.setText(teamNumEdit.text.toString().substring(0, 5))
                     teamNumEdit.setSelection(teamNumEdit.length())
                 }
                 try {

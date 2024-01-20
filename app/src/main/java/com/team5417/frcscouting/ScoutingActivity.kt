@@ -326,87 +326,42 @@ class ScoutingActivity : AppCompatActivity() {
             title = "Autonomous Period"
         ),
         DataModel.Checkbox(
-            id = "lc",
-            title = "Robot left Community:",
+            id = "lsz",
+            title = "Robot left Starting Zone:",
             value = false
         ),
         DataModel.Number(
-            id = "acb",
-            title = "Cube Bottom Scored:",
+            id = "ana",
+            title = "Notes Scored in Amp:",
             value = 0f
         ),
         DataModel.Number(
-            id = "acm",
-            title = "Cube Middle Scored:",
+            id = "ans",
+            title = "Notes Scored in Speaker:",
             value = 0f
-        ),
-        DataModel.Number(
-            id = "act",
-            title = "Cube Top Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "aob",
-            title = "Cone Bottom Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "aom",
-            title = "Cone Middle Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "aot",
-            title = "Cone Top Scored:",
-            value = 0f
-        ),
-        DataModel.DropDown(
-            id = "acs",
-            title = "Charge Station",
-            options = mutableListOf("None", "Docked", "Docked & Engaged", "Rolled Off")
         ),
 
         DataModel.Header(
             title = "TeleOP Period"
         ),
         DataModel.Number(
-            id = "tcb",
-            title = "Cube Bottom Scored:",
+            id = "tna",
+            title = "Notes Scored in Amp:",
             value = 0f
         ),
         DataModel.Number(
-            id = "tcm",
-            title = "Cube Middle Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "tct",
-            title = "Cube Top Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "tob",
-            title = "Cone Bottom Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "tom",
-            title = "Cone Middle Scored:",
-            value = 0f
-        ),
-        DataModel.Number(
-            id = "tot",
-            title = "Cone Top Scored:",
+            id = "tns",
+            title = "Notes Scored in Speaker:",
             value = 0f
         ),
         DataModel.DropDown(
-            id = "tcs",
-            title = "Charge Station",
-            options = mutableListOf("None", "Docked", "Docked & Engaged", "Rolled Off")
+            id = "ts",
+            title = "Stage",
+            options = mutableListOf("None", "Parked", "On Stage", "SPOTLIT On Stage")
         ),
         DataModel.Checkbox(
-            id = "tpk",
-            title = "Robot Parked in Community:",
+            id = "tnt",
+            title = "Scored Trap",
             value = false
         ),
 

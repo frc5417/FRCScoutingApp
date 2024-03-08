@@ -357,7 +357,7 @@ class ScoutingActivity : AppCompatActivity() {
         DataModel.DropDown(
             id = "ts",
             title = "Stage",
-            options = mutableListOf("None", "Parked", "On Stage", "SPOTLIT On Stage")
+            options = mutableListOf("None", "Parked", "On Stage", "Spotlit On Stage")
         ),
         DataModel.Checkbox(
             id = "tnt",

@@ -336,7 +336,12 @@ class ScoutingActivity : AppCompatActivity() {
             value = 0f
         ),
         DataModel.Number(
-            id = "ans",
+            id = "ansa",
+            title = "Notes Attempted in Speaker:",
+            value = 0f
+        ),
+        DataModel.Number(
+            id = "anss",
             title = "Notes Scored in Speaker:",
             value = 0f
         ),
@@ -350,7 +355,12 @@ class ScoutingActivity : AppCompatActivity() {
             value = 0f
         ),
         DataModel.Number(
-            id = "tns",
+            id = "tnsa",
+            title = "Notes Attempted in Speaker:",
+            value = 0f
+        ),
+        DataModel.Number(
+            id = "tnss",
             title = "Notes Scored in Speaker:",
             value = 0f
         ),
